@@ -1,2 +1,21 @@
 - Compilador Java
   javac 1.8.0_144
+- tPosA y tABB son punteros, y en Java no hay gestión de memoria manual, por lo que desaparecen
+- tNodoA se transforma en un objeto para representar el árbol, con todos sus métodos
+- tClave lo traducimos en hacer el árbol de modo paramétrico / lo dejamos como Integer (necesario
+que sea envoltorio para tener un árbol vacío)
+- Nuestro objeto árbol (Bts) tiene atributos key, rightChild y leftChild
+- Suprimimos error y crearNodo porque tenemos el OutOfMemoryError que Java gestiona de manera automática
+- ArbolVacio es el constructor por defecto (todos los atributos a null)
+- Las distintas versiones iterativas y recursivas de los métodos se implementan como privadas, y sólo un método
+"envoltorio" se pone como público
+- Si los setters privados no funcionaran, poner visibilidad paquete/protected para que no se pueda tocar desde el 
+programa principal
+- Probar a conseguir una clave Integer y modificarla y ver qué pasa
+- esArbolVacio comprueba que key == null
+- Al eliminar, poner el nodo a null, hay que hacerlo desde el padre
+- El método sup2 pasa a ser privado en vez de anidado, tenemos que devolver el padre del nodo más a la derecha
+para poder acceder a la clave de dicho nodo y cambiarla con la del nodo a eliminar, y a la vez poder enganchar los
+hijos del nodo encontrado con el resto del árbol (ie su padre)
+	-> También se puede hacer con una función lambda
+	-> En el resto de eliminar_r la adaptación es directa
