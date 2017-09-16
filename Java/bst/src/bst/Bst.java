@@ -107,10 +107,6 @@ public class Bst {
 		return result;
 	}
 	
-	public Bst searchKey(Integer key) {
-		return searchR(this.root, key);
-	}
-	
 	private Bst searchI(Integer key) {
 		Node node = this.root;
 		
@@ -125,5 +121,9 @@ public class Bst {
 		Bst tree = new Bst();
 		tree.root = node;
 		return tree;
+	}
+	
+	public Bst searchKey(Integer key) {
+		return searchI(key);
 	}
 }
