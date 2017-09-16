@@ -180,6 +180,87 @@ public class Bst {
 		}
 	}
 	
+	private void deleteI(Integer key) {
+		int numChildren;
+		Node rm;			// Node to remove
+		Node parentRm;		// Parent of node to remove
+		Node noEmptyChild;	// If node to remove has only a child, it isn't empty one
+		Node maxLeftChild;	// If node to remove has two children, it is greater value than all left subtree
+		
+		parentRm = null;
+		rm = this.root;
+		
+		// Search node to remove
+		while ((rm != null) && (rm.getKey() != key)) {
+			parentRm = rm;
+			
+			if (key < rm.getKey()) { // Move forward left child if key is less than the current node
+				rm = rm.getLeftChild();
+			} else { // Move forward right child if key is greater than the current node
+				rm = rm.getRightChild();
+			}
+		}
+		
+		// If the key isn't in the tree, It do anything
+		numChildren = 0;
+		if (rm.getLeftChild() != null) numChildren++;
+		if (rm.getRightChild() != null) numChildren++;
+		
+		switch (numChildren) {
+			// Remove leaf node
+			case 0:
+				if (parentRm == null) {
+					this.root = null;
+				} else if (parentRm.getLeftChild() == rm) {
+					parentRm.setLeftChild(null);
+				} else {
+					parentRm.setRightChild(null);
+				}
+				break;
+	
+			// Remove node with one child
+			case 1:
+				if (rm.getLeftChild() == null) {
+					noEmptyChild = rm.getRightChild();
+				} else {
+					noEmptyChild = rm.getLeftChild();
+				}
+				
+				if (parentRm == null) {
+					this.root = noEmptyChild;
+				} else if (parentRm.getLeftChild() == rm) {
+					parentRm.setLeftChild(noEmptyChild);
+				} else {
+					parentRm.setRightChild(noEmptyChild);
+				}
+				break;
+		
+			// Remove node with two children
+			case 2:
+				parentRm = rm;
+				maxLeftChild = rm.getLeftChild();
+				
+				// Search node with greater key than all left subtree
+				while (maxLeftChild.getRightChild() != null) {
+					parentRm = maxLeftChild;
+					maxLeftChild = maxLeftChild.getRightChild();
+				}
+				
+				// Up the key of found node
+				rm.setKey(maxLeftChild.getKey());
+				
+				// If left subtree haven't right child
+				if (parentRm == rm) {
+					// Maximun left child node will be removed, so put its children to parent node
+					parentRm.setLeftChild(maxLeftChild.getLeftChild());
+				} else {
+					// Maximun left child node will be removed, so put its children to parent node
+					parentRm.setRightChild(maxLeftChild.getLeftChild());
+				}
+				break;
+		}
+	}
+	
 	public void deleteKey(Integer key) {
 		deleteR(this.root, null, key);
 	}

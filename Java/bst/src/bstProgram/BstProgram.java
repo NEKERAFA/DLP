@@ -68,6 +68,7 @@ public class BstProgram {
 		tree.deleteKey(2);
 		bracketPreorder(tree);
 		System.out.println();
+
 	}
 
 }
