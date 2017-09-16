@@ -1,0 +1,44 @@
+\documentclass[12pt,a4paper,spanish]{article}
+
+% ---- Paquetes ----
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage[top=3cm, bottom=3cm, left=3cm, right=3cm]{geometry}
+
+% ---- Variables ----
+
+\def \subject {Deseño das Linguaxes de Programación}
+\def \work {Práctica 1: Análisis de las características de un conjunto de lenguajes de programación a partir de un caso práctico}
+\def \authorOne {Rafael Alcalde Azpiazu\\rafael.alcalde.azpiazu\\(rafael.alcalde.azpiazu@udc.es)}
+\def \authorTwo {Eva Suárez García\\eva.suarez.garcia\\(eva.suarez.garcia@udc.es)}
+\def \languages {Java\\C\\Python\\OCaml}
+\def \place {A Coruña }
+
+% ---- Documento ----
+
+\begin{document}
+
+	% ---- Portada ---- %
+	\input{portada}
+	\newpage
+
+	% ---- Índice ---- %
+	\tableofcontents
+	\newpage
+
+	% ---- Contenido ---- %
+	\input{reports/java}
+	\newpage
+
+	\input{reports/c}
+	\newpage
+
+	\input{reports/python}
+	\newpage
+
+	\input{reports/ocaml}
+	\newpage
+
+\end{document}
