@@ -48,6 +48,21 @@ public class BstProgram {
 		System.out.println("Search 6... " + (tree.searchKey(6)).root());
 		System.out.println("Search 7... " + (tree.searchKey(7)).root());
 
+		System.out.print("Remove 5... ");
+		tree.removeKey(5);
+		bracketPreorder(tree); System.out.println();
+		
+		System.out.print("Remove 6... ");
+		tree.removeKey(6);
+		bracketPreorder(tree); System.out.println();
+		
+		System.out.print("Remove 4... ");
+		tree.removeKey(4);
+		bracketPreorder(tree); System.out.println();
+		
+		System.out.print("Remove 2... ");
+		tree.removeKey(2);
+		bracketPreorder(tree); System.out.println();
 	}
 
 }
