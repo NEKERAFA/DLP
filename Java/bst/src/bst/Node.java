@@ -13,4 +13,16 @@ public class Node {
 	public Node getLeftChild() {
 		return this.leftChild;
 	}
+	
+	void setKey(Integer key) {
+		this.key = key;
+	}
+	
+	void setLeftChild(Node leftChild) {
+		this.leftChild = leftChild;
+	}
+	
+	void setRightChild(Node rightChild) {
+		this.rightChild = rightChild;
+	}
 }
