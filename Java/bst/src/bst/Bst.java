@@ -1,38 +1,40 @@
+/* 
+ * Rafael Alcalde Azpiazu: rafael.alcalde.azpiazu (rafael.alcalde.azpiazu@udc.es)
+ * Eva Suárez García: eva.suarez.garcia (eva.suarez.garcia@udc.es)
+ */
+
 package bst;
 
 public class Bst {
 
-	private Integer key;
-	private Bst leftChild;
-	private Bst rightChild;
-	
-	public Bst getRightChild() {
-		return rightChild;
-	}
-	
+	private Node root;
+
 	public boolean isEmptyTree() {
-		return key == null;
+		return root == null;
 	}
-	
+
 	private void insertR(Bst tree, Integer key) {
 		// Insert in the root
-		if (this.key == null) {
-			this.key = key;
+		if (tree.root == null) {
+			tree.root = new Node();
+			tree.root.setKey(key);
 		// Insert in left tree child
-		} else if (key < this.key) {
-			if (tree.leftChild == null) {
-				tree.leftChild = new Bst();
-			}
-			
-			insertR(tree.leftChild, key);
+		} else if (key < tree.root.getKey()) {
+			insertR(tree.root.getLeftChild(), key);
 		// Insert in right tree child
-		} else if (key > this.key) {
-			if (tree.rightChild == null) {
-				tree.rightChild = new Bst();
-			}
-			
-			insertR(tree.rightChild, key);
+		} else if (key > tree.root.getKey()) {
+			insertR(tree.root.getRightChild(), key);
 		}
-		// Ignore duplicate
+		// Ignore duplicates
+	}
+	
+	private void insertI(Integer key) {
+		if (this.root.getKey() == null) { // Empty tree
+			this.key = key;
+		} else {
+			Bst newNode = new Bst();
+			newNode.key = key;
+			
+		}
 	}
 }
