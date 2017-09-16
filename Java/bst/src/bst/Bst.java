@@ -9,11 +9,15 @@ public class Bst {
 
 	private Node root = null;
 
+	public Bst() {
+		root = new Node();
+	}
+	
 	public Integer root() {
 		return this.root.getKey();
 	}
 	
-	public Bst getRightChild() {
+	public Bst rightChild() {
 		Bst rightChild = new Bst();
 		rightChild.root = this.root.getRightChild();
 		return rightChild;
