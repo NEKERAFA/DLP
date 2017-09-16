@@ -19,17 +19,24 @@ public class Bst {
 		return root == null;
 	}
 
-	private void insertR(Bst tree, Integer key) {
+	private void insertR(Node node, Integer key) {
 		// Insert in the root
-		if (tree.root == null) {
-			tree.root = new Node();
-			tree.root.setKey(key);
+		if (node.getKey() == null) {
+			node.setKey(key);
 		// Insert in left tree child
-		} else if (key < tree.root.getKey()) {
-			insertR(tree.root.getLeftChild(), key);
+		} else if (key < node.getKey()) {
+			if (node.getLeftChild() == null) {
+				node.setLeftChild(new Node());
+			}
+			
+			insertR(node.getLeftChild(), key);
 		// Insert in right tree child
-		} else if (key > tree.root.getKey()) {
-			insertR(tree.root.getRightChild(), key);
+		} else if (key > node.getKey()) {
+			if (node.getRightChild() == null) {
+				node.setRightChild(new Node());
+			}
+			
+			insertR(node.getRightChild(), key);
 		}
 		// Ignore duplicates
 	}
