@@ -9,6 +9,12 @@ public class Bst {
 
 	private Node root;
 
+	public Bst getRightChild() {
+		Bst rightChild = new Bst();
+		rightChild.root = this.root.getRightChild();
+		return rightChild;
+	}
+	
 	public boolean isEmptyTree() {
 		return root == null;
 	}
