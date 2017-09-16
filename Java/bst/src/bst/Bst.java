@@ -6,7 +6,10 @@
 package bst;
 
 public class Bst {
-
+	// TODO deberíamos plantearnos poner un método
+	// arbolVacio de todos modos?
+	// Rollo poner a nulo el nodo y via
+	// (aunque parece un desperdicio de memoria tremendo)
 	private Node root = null;
 
 	public Bst() {
@@ -125,5 +128,59 @@ public class Bst {
 	
 	public Bst searchKey(Integer key) {
 		return searchI(key);
+	}
+	
+	// del: node to delete
+	// parentNode: parent of the node that will replace del
+	// TODO inicialmente parentNode == del?
+	private void deleteAux(Node del, Node parentNode, Node node) {
+		// Check if the right child has its own right child
+		// We need the parent node instead of the node itself
+		// in order to take the children of the node that
+		// will replace del and put them as children of
+		// parentNode (<- TODO para la memoria más que nada)
+		if (node.getRightChild() != null) { 
+			deleteAux(del, node, node.getRightChild());
+		} else {
+			del.setKey(node.getKey());
+			parentNode.setRightChild(node.getLeftChild());
+		}
+	}
+	
+	// parentNode: parent of the node to be deleted. Used to reorder the children of the node
+	// to be deleted.
+	private void deleteR(Node node, Node parentNode, Integer key) {
+		if (node != null) {
+			if (key < node.getKey()) {
+				deleteR(node.getLeftChild(), node, key);
+			} else if (key > node.getKey()) {
+				deleteR(node.getRightChild(), node, key);
+			} else {
+				// Delete node with at most one child
+				if (node.getLeftChild() == null) {
+					if (parentNode == null) {
+						this.root = node.getRightChild();
+					} else if (parentNode.getLeftChild() == node) {
+						parentNode.setLeftChild(node.getRightChild());
+					} else {
+						parentNode.setRightChild(node.getRightChild());
+					}
+				} else if (node.getRightChild() == null) {
+					if (parentNode == null) {
+						this.root = node.getLeftChild();
+					} if (parentNode.getLeftChild() == node) {
+						parentNode.setLeftChild(node.getLeftChild());
+					} else {
+						parentNode.setRightChild(node.getLeftChild());
+					}
+				} else {
+					deleteAux(node, node, node.getLeftChild());
+				}
+			}
+		}
+	}
+	
+	public void deleteKey(Integer key) {
+		deleteR(this.root, null, key);
 	}
 }

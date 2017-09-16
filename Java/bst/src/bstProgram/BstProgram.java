@@ -38,16 +38,36 @@ public class BstProgram {
 		tree.insertKey(5);
 		tree.insertKey(7);
 		
-		bracketPreorder(tree); System.out.println();
+		bracketPreorder(tree); 
+		System.out.println();
 		
-		System.out.println("Search 1... " + (tree.searchKey(1)).root());
-		System.out.println("Search 2... " + (tree.searchKey(2)).root());
-		System.out.println("Search 3... " + (tree.searchKey(3)).root());
-		System.out.println("Search 4... " + (tree.searchKey(4)).root());
-		System.out.println("Search 5... " + (tree.searchKey(5)).root());
-		System.out.println("Search 6... " + (tree.searchKey(6)).root());
-		System.out.println("Search 7... " + (tree.searchKey(7)).root());
+		System.out.println("Search 1... " + tree.searchKey(1).root());
+		System.out.println("Search 2... " + tree.searchKey(2).root());
+		System.out.println("Search 3... " + tree.searchKey(3).root());
+		System.out.println("Search 4... " + tree.searchKey(4).root());
+		System.out.println("Search 5... " + tree.searchKey(5).root());
+		System.out.println("Search 6... " + tree.searchKey(6).root());
+		System.out.println("Search 7... " + tree.searchKey(7).root());
 
+		System.out.print("Delete 5...");
+		tree.deleteKey(5);
+		bracketPreorder(tree);
+		System.out.println();
+		
+		System.out.print("Delete 6...");
+		tree.deleteKey(6);
+		bracketPreorder(tree);
+		System.out.println();
+		
+		System.out.print("Delete 4...");
+		tree.deleteKey(4);
+		bracketPreorder(tree);
+		System.out.println();
+		
+		System.out.print("Delete 2...");
+		tree.deleteKey(2);
+		bracketPreorder(tree);
+		System.out.println();
 	}
 
 }
