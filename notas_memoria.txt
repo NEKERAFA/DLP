@@ -29,4 +29,4 @@ hijos del nodo encontrado con el resto del árbol (ie su padre)
 - Plantearse un constructor que reciba un Integer
 
 - Insertar_i no empieza creando un Bst porque si el árbol está vacío no lo necesita
-- La versión recursiva de insertar necesita más argumentos que la iterativa
+- La versión recursiva de insertar y buscar necesita más argumentos que la iterativa

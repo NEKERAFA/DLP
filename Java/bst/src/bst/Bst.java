@@ -89,4 +89,25 @@ public class Bst {
 	public void insertKey(Integer key) {
 		insertI(key);
 	}
+	
+	private Bst searchR(Node node, Integer key) {
+		Bst result;
+		
+		if (node == null) {
+			result = new Bst(); // TODO devolver vacío?
+		} else if (key == node.getKey()) {
+			result = new Bst();
+			result.root = node;
+		} else if (key < node.getKey()) {
+			result = searchR(node.getLeftChild(), key);
+		} else {
+			result = searchR(node.getRightChild(), key);
+		}
+		
+		return result;
+	}
+	
+	public Bst searchKey(Integer key) {
+		return searchR(this.root, key);
+	}
 }
