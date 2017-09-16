@@ -7,20 +7,30 @@ package bst;
 
 public class Bst {
 
-	private Node root;
+	private Node root = null;
 
+	public Integer root() {
+		return this.root.getKey();
+	}
+	
 	public Bst getRightChild() {
 		Bst rightChild = new Bst();
 		rightChild.root = this.root.getRightChild();
 		return rightChild;
 	}
 	
+	public Bst leftChild() {
+		Bst leftChild = new Bst();
+		leftChild.root = this.root.getLeftChild();
+		return leftChild;
+	}
+	
 	public boolean isEmptyTree() {
-		return root == null;
+		return this.root == null;
 	}
 
 	private void insertR(Node node, Integer key) {
-		// Insert in the root
+		// Insert in empty tree
 		if (node.getKey() == null) {
 			node.setKey(key);
 		// Insert in left tree child
@@ -38,21 +48,12 @@ public class Bst {
 			
 			insertR(node.getRightChild(), key);
 		}
-		// Ignore duplicates
-	}
-	
-	public Integer root() {
-		return this.root.getKey();
-	}
-	
-	public Bst leftChild() {
-		Bst child = new Bst();
-		child.root = this.root.getLeftChild();
-		return child;
+		// Duplicates are ignored
 	}
 	
 	private void insertI(Integer key) {
-		if (this.root.getKey() == null) { // Empty tree
+		// Insert in empty tree
+		if (this.root.getKey() == null) { 
 			this.root.setKey(key);
 		} else {
 			Node newNode = new Node();
@@ -60,6 +61,7 @@ public class Bst {
 			Node parent = null;
 			Node child = this.root;
 			
+			// Search for the key's right place in the tree
 			while ((child != null) && (child.getKey() != key)) {
 				parent = child;
 				if (key < child.getKey()) {
@@ -69,6 +71,7 @@ public class Bst {
 				}
 			}
 			
+			// Insert new key in its place
 			if (child == null) {
 				if (key < parent.getKey()) {
 					parent.setLeftChild(newNode);
@@ -77,5 +80,9 @@ public class Bst {
 				}
 			}
 		}
+	}
+	
+	public void insertKey(Integer key) {
+		insertR(this.root, key);
 	}
 }
