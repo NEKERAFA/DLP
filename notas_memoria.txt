@@ -1,10 +1,15 @@
 - Compilador Java
   javac 1.8.0_144
-- tPosA y tABB son punteros, y en Java no hay gestión de memoria manual, por lo que desaparecen
-- tNodoA se transforma en un objeto para representar el árbol, con todos sus métodos
+
+- tPosA es un puntero, y en Java no hay gestión de memoria manual, por lo que desaparece
+- tNodoA se transforma en un objeto para representar el nodo
+- tABB se transforma en un objeto para representar el árbol
 - tClave lo traducimos en hacer el árbol de modo paramétrico / lo dejamos como Integer (necesario
 que sea envoltorio para tener un árbol vacío)
-- Nuestro objeto árbol (Bts) tiene atributos key, rightChild y leftChild
+- Nuestro objeto nodo tiene atributos key, rightChild y leftChild
+- Nuestro objeto árbol tiene un atributo nodo
+- El objeto nodo tiene getters públicos y setters de visibilidad paquete (para que no se pueda modificar desde el 
+programa principal)
 - Suprimimos error y crearNodo porque tenemos el OutOfMemoryError que Java gestiona de manera automática
 - ArbolVacio es el constructor por defecto (todos los atributos a null)
 - Las distintas versiones iterativas y recursivas de los métodos se implementan como privadas, y sólo un método
@@ -19,3 +24,7 @@ para poder acceder a la clave de dicho nodo y cambiarla con la del nodo a elimin
 hijos del nodo encontrado con el resto del árbol (ie su padre)
 	-> También se puede hacer con una función lambda
 	-> En el resto de eliminar_r la adaptación es directa
+
+- Plantearse un constructor que reciba un Integer
+
+- Insertar_i no empieza creando un Bst porque si el árbol está vacío no lo necesita
