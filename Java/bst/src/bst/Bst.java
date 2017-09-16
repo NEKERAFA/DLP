@@ -89,4 +89,20 @@ public class Bst {
 	public void insertKey(Integer key) {
 		insertR(this.root, key);
 	}
+	
+	private Bst searchI(Integer key) {
+		Node node = this.root;
+		
+		while ((node != null) && (node.getKey() != key)) {
+			if (key < node.getKey()) {
+				node = node.getLeftChild();
+			} else {
+				node = node.getRightChild();
+			}
+		}
+		
+		Bst tree = new Bst();
+		tree.root = node;
+		return tree;
+	}
 }
