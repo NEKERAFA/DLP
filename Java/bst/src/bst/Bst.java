@@ -87,6 +87,6 @@ public class Bst {
 	}
 	
 	public void insertKey(Integer key) {
-		insertR(this.root, key);
+		insertI(key);
 	}
 }

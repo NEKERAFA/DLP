@@ -19,9 +19,9 @@ public class BstProgram {
 				bracketPreorder(a.leftChild());
 				System.out.print(" ");
 				bracketPreorder(a.rightChild());
+			} else {
+				System.out.print(" " + a.root() + " ");
 			}
-		} else {
-			System.out.print(" " + a.root() + " ");
 		}
 		System.out.print(")");
 	}

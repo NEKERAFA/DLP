@@ -10,6 +10,7 @@ que sea envoltorio para tener un árbol vacío)
 - Nuestro objeto árbol tiene un atributo nodo
 - El objeto nodo tiene getters públicos y setters de visibilidad paquete (para que no se pueda modificar desde el 
 programa principal)
+- Para devolver los hijos derecho e izquierdo, envolvemos sus nodos en un objeto Bst
 - Suprimimos error y crearNodo porque tenemos el OutOfMemoryError que Java gestiona de manera automática
 - ArbolVacio es el constructor por defecto (todos los atributos a null)
 - Las distintas versiones iterativas y recursivas de los métodos se implementan como privadas, y sólo un método
@@ -28,3 +29,4 @@ hijos del nodo encontrado con el resto del árbol (ie su padre)
 - Plantearse un constructor que reciba un Integer
 
 - Insertar_i no empieza creando un Bst porque si el árbol está vacío no lo necesita
+- La versión recursiva de insertar necesita más argumentos que la iterativa
