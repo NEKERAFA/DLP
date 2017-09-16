@@ -9,15 +9,15 @@ var
 procedure preordenParentizado(A :tABB);
 begin
    write('(');
-   if not esArbolVacio(A) then 
+   if not esArbolVacio(A) then
       if not esArbolvacio(hijoIzquierdo(A)) or not esArbolvacio(hijoDerecho(A)) then begin
         write(' ',Raiz(A), ' ');
         preordenParentizado(hijoIzquierdo(A));
         write(' ');
         preordenParentizado(hijoDerecho(A))
      end
-   else 
-     write(' ',Raiz(A), ' ');
+   	 else
+     		write(' ',Raiz(A), ' ');
    write(')');
 end;
 
@@ -43,23 +43,20 @@ begin
    writeln('buscar 6...', Raiz(buscarClave(arbol,6)));
    writeln('buscar 7...', Raiz(buscarClave(arbol,7)));
 
-   write('eliminar 5...');			       
+   write('eliminar 5...');
    eliminarClave(arbol, 5);
    preordenParentizado(arbol); writeln;
 
-   write('eliminar 6...');			       
+   write('eliminar 6...');
    eliminarClave(arbol,6);
    preordenParentizado(arbol); writeln;
 
-   write('eliminar 4...');			       
+   write('eliminar 4...');
    eliminarClave(arbol,4);
    preordenParentizado(arbol); writeln;
 
-   write('eliminar 2...');			       
+   write('eliminar 2...');
    eliminarClave(arbol,2);
    preordenParentizado(arbol); writeln;
 
 end.
-
-
-   
