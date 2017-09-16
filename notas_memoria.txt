@@ -23,6 +23,8 @@ programa principal
 - El método sup2 pasa a ser privado en vez de anidado, tenemos que devolver el padre del nodo más a la derecha
 para poder acceder a la clave de dicho nodo y cambiarla con la del nodo a eliminar, y a la vez poder enganchar los
 hijos del nodo encontrado con el resto del árbol (ie su padre)
+	-> En el caso de la raíz hay que cambiar root por el nodo hijo. Es el único caso en el que
+	es necesario usar el propio árbol
 	-> También se puede hacer con una función lambda
 	-> En el resto de eliminar_r la adaptación es directa
 
