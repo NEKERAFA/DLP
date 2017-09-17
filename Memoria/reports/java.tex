@@ -1,15 +1,20 @@
 \section{Implementación en Java}
-
-Para este lenguaje se usó el compilador \texttt{javac} en su versión 1.8.0\_144.
+\hspace{2em}Para este lenguaje se usó el compilador \texttt{javac} en su versión 1.8.0\_144.
 
 \subsection{Descripción}
-
-Java es un lenguaje de programación de alto nivel que sigue el paradigma de orientación a objetos basada en clases, aunque a día de hoy las últimas versiones ya incluyen elementos de otros paradigmas, como funciones-lamda. \\
+\hspace{2em}Java es un lenguaje de programación de alto nivel que sigue el paradigma de orientación a objetos basada en clases, aunque a día de hoy las últimas versiones ya incluyen elementos de otros paradigmas, como funciones-lamda. \\
 
 Como en sus inicios se pensó en que fuera un lenguaje de propósito general, la compilación del código fuente se traduce a bytecode java, el cual es ejecutado sobre una máquina virtual que si está diseñada para la plataforma final. \\
 
-Su sintaxis deriva en gran medida de C++, siendo Java un lenguaje de tipado estático y fuerte. Es la propia máquina virtual la encargada de la gestión de memoria mediante un recolector automático de basura, el cual es responsable de gestionar el ciclo de vida, reservando memoria cuando el programador crea un objeto, y liberando memoria cuando se deja de referenciar completamente el objeto usado. \\
+Su sintaxis deriva en gran medida de C++, siendo Java un lenguaje de tipado estático y fuerte. Es la propia máquina virtual la encargada de la gestión de memoria mediante un recolector automático de basura, el cual es responsable de gestionar el ciclo de vida, reservando memoria cuando el programador crea un objeto, y liberando memoria cuando se deja de referenciar completamente el objeto usado.
 
-\subsection{Análisis}
+\subsection{Análisis del código}
+\hspace{2em}Dadas las diferencias entre Pascal (lenguaje estructurado imperativo) y Java (lenguaje orientado a objetos imperativo), la estructura \texttt{tNodoA} se han traducido en la clase \texttt{Node}, que sigue conteniendo los atributos \texttt{key}, \texttt{rightChild} y \texttt{leftChild}. Como las clases son más abstactas que las estructuras, la programación resultante es de alto nivel y más legible. \\
 
-\subsection{Justificaciones de diseño}
+Otro elemento que ha cambiado son los punteros y la gestión de memoria manual en Pascal. En Java no hay elementos para manipulación de bajo nivel, por lo que la gestión de memoria es automatizada por la máquina virtual. Esto hace que desaparezca el uso de los punteros \texttt{tPosA}. \\
+
+Relacionado, se ha eliminado el procedure \texttt{error}, ya que la máquina virtual de Java, cuando se queda sin memoria, lanza la excepción \texttt{OutOfMemoryError}. También se ha eliminado la función \texttt{crearNodo}, que se traduce en el constructor de la clase \texttt{Node} en Java.
+
+\subsection{Modificaciones en el diseño}
+
+Por aquí poner todo lo que ha cambiado en la implementación.
