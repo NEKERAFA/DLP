@@ -6,15 +6,10 @@
 package bst;
 
 public class Bst {
-	// TODO deberíamos plantearnos poner un método
-	// arbolVacio de todos modos?
-	// Rollo poner a nulo el nodo y via
-	// (aunque parece un desperdicio de memoria tremendo)
+	// TODO deberíamos plantearnos poner un método arbolVacio de todos modos?
+	// Rollo poner a nulo el nodo y via (aunque parece un desperdicio de memoria tremendo)
+	// Más bien poner todos los atributos del nodo a null
 	private Node root = null;
-
-	public Bst() {
-		root = new Node();
-	}
 	
 	public Integer root() {
 		return this.root.getKey();
@@ -31,7 +26,7 @@ public class Bst {
 		leftChild.root = this.root.getLeftChild();
 		return leftChild;
 	}
-	
+
 	public boolean isEmptyTree() {
 		return this.root == null;
 	}
@@ -40,9 +35,9 @@ public class Bst {
 		// Insert in empty tree
 		if (node.getKey() == null) {
 			node.setKey(key);
-		// Insert in left tree child
+		// Insert in left tree child TODO preguntar a Fer si es correcto
 		} else if (key < node.getKey()) {
-			if (node.getLeftChild() == null) {
+			if (node.getLeftChild() == null) { // TODO creamos el hijo primero desde el padre para que quede conectado
 				node.setLeftChild(new Node());
 			}
 			
@@ -86,6 +81,7 @@ public class Bst {
 					parent.setRightChild(newNode);
 				}
 			}
+			// Duplicates are ignored
 		}
 	}
 	
@@ -97,7 +93,7 @@ public class Bst {
 		Bst result;
 		
 		if (node == null) {
-			result = new Bst(); // TODO devolver vacío?
+			result = new Bst(); 
 		} else if (key == node.getKey()) {
 			result = new Bst();
 			result.root = node;
@@ -109,7 +105,8 @@ public class Bst {
 		
 		return result;
 	}
-	
+	// TODO la definición mal hecha del árbol vacío también hace que el resultado al no encontrar
+	// una clave sea distinto entre la versión iterativa y la recursiva
 	private Bst searchI(Integer key) {
 		Node node = this.root;
 		
@@ -130,11 +127,11 @@ public class Bst {
 		return searchI(key);
 	}
 	
-	// del: node to delete
+	// del: node with the key to delete
 	// parentNode: parent of the node that will replace del
-	// TODO inicialmente parentNode == del?
+	// This method replaces the node to remove with the node with
+	// the greatest key from its left subtree.
 	private void deleteAux(Node del, Node parentNode, Node node) {
-		// Check if the right child has its own right child
 		// We need the parent node instead of the node itself
 		// in order to take the children of the node that
 		// will replace del and put them as children of
@@ -160,6 +157,7 @@ public class Bst {
 				if (node.getLeftChild() == null) {
 					if (parentNode == null) {
 						this.root = node.getRightChild();
+					// Check if node was a right or a left child
 					} else if (parentNode.getLeftChild() == node) {
 						parentNode.setLeftChild(node.getRightChild());
 					} else {
@@ -168,11 +166,13 @@ public class Bst {
 				} else if (node.getRightChild() == null) {
 					if (parentNode == null) {
 						this.root = node.getLeftChild();
+					// Check if node was a right or a left child
 					} if (parentNode.getLeftChild() == node) {
 						parentNode.setLeftChild(node.getLeftChild());
 					} else {
 						parentNode.setRightChild(node.getLeftChild());
 					}
+				// Delete node with two children
 				} else {
 					deleteAux(node, node, node.getLeftChild());
 				}
@@ -183,81 +183,84 @@ public class Bst {
 	private void deleteI(Integer key) {
 		int numChildren;
 		Node rm;			// Node to remove
-		Node parentRm;		// Parent of node to remove
-		Node noEmptyChild;	// If node to remove has only a child, it isn't empty one
-		Node maxLeftChild;	// If node to remove has two children, it is greater value than all left subtree
-		
+		Node parentRm;		// Parent of the node to remove
+		Node notEmptyChild;	// If the node to remove has only one child, the one that isn't empty
+		Node maxLeftChild;	// If the node to remove has two children, the node with the greatest key of the left subtree
+		// TODO nombre de notEmptyChild
 		parentRm = null;
 		rm = this.root;
 		
-		// Search node to remove
+		// Search for the node to remove
 		while ((rm != null) && (rm.getKey() != key)) {
 			parentRm = rm;
 			
-			if (key < rm.getKey()) { // Move forward left child if key is less than the current node
+			if (key < rm.getKey()) { 
 				rm = rm.getLeftChild();
-			} else { // Move forward right child if key is greater than the current node
+			} else { 
 				rm = rm.getRightChild();
 			}
 		}
+
+		// If the key isn't in the tree, don't do anything
+		if (rm != null) {
+			numChildren = 0;
+			if (rm.getLeftChild() != null) 
+				numChildren++;
+			if (rm.getRightChild() != null) 
+				numChildren++;
+			
+			switch (numChildren) {
+				// Remove leaf node
+				case 0:
+					if (parentRm == null) {
+						this.root = null; // TODO no corresponde con la definición de árbol vacío del constructor
+					} else if (parentRm.getLeftChild() == rm) {
+						parentRm.setLeftChild(null);
+					} else {
+						parentRm.setRightChild(null);
+					}
+					break;
 		
-		// If the key isn't in the tree, It do anything
-		numChildren = 0;
-		if (rm.getLeftChild() != null) numChildren++;
-		if (rm.getRightChild() != null) numChildren++;
-		
-		switch (numChildren) {
-			// Remove leaf node
-			case 0:
-				if (parentRm == null) {
-					this.root = null;
-				} else if (parentRm.getLeftChild() == rm) {
-					parentRm.setLeftChild(null);
-				} else {
-					parentRm.setRightChild(null);
-				}
-				break;
-	
-			// Remove node with one child
-			case 1:
-				if (rm.getLeftChild() == null) {
-					noEmptyChild = rm.getRightChild();
-				} else {
-					noEmptyChild = rm.getLeftChild();
-				}
+				// Remove node with one child
+				case 1:
+					if (rm.getLeftChild() == null) {
+						notEmptyChild = rm.getRightChild();
+					} else {
+						notEmptyChild = rm.getLeftChild();
+					}
+					
+					if (parentRm == null) {
+						this.root = notEmptyChild;
+					} else if (parentRm.getLeftChild() == rm) {
+						parentRm.setLeftChild(notEmptyChild);
+					} else {
+						parentRm.setRightChild(notEmptyChild);
+					}
+					break;
+			
+				// Remove node with two children
+				case 2:
+					parentRm = rm;
+					maxLeftChild = rm.getLeftChild();
+					
+					// Search for the node with the greatest key of the left subtree
+					while (maxLeftChild.getRightChild() != null) {
+						parentRm = maxLeftChild;
+						maxLeftChild = maxLeftChild.getRightChild();
+					}
+					
+					// Replace the key of the node to remove with the found one
+					rm.setKey(maxLeftChild.getKey());
 				
-				if (parentRm == null) {
-					this.root = noEmptyChild;
-				} else if (parentRm.getLeftChild() == rm) {
-					parentRm.setLeftChild(noEmptyChild);
-				} else {
-					parentRm.setRightChild(noEmptyChild);
-				}
-				break;
-		
-			// Remove node with two children
-			case 2:
-				parentRm = rm;
-				maxLeftChild = rm.getLeftChild();
-				
-				// Search node with greater key than all left subtree
-				while (maxLeftChild.getRightChild() != null) {
-					parentRm = maxLeftChild;
-					maxLeftChild = maxLeftChild.getRightChild();
-				}
-				
-				// Up the key of found node
-				rm.setKey(maxLeftChild.getKey());
-				
-				// If left subtree haven't right child
-				if (parentRm == rm) {
-					// Maximun left child node will be removed, so put its children to parent node
-					parentRm.setLeftChild(maxLeftChild.getLeftChild());
-				} else {
-					// Maximun left child node will be removed, so put its children to parent node
-					parentRm.setRightChild(maxLeftChild.getLeftChild());
-				}
-				break;
+					// TODO Put maxLeftChild's children as its parent's
+					if (parentRm == rm) {
+						// If maxLeftChild doesn't have right child
+						parentRm.setLeftChild(maxLeftChild.getLeftChild());
+					} else {
+						parentRm.setRightChild(maxLeftChild.getLeftChild());
+					}
+					break;
+			}
 		}
 	}
 	
