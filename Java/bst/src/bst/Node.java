@@ -7,31 +7,8 @@ package bst;
 
 public class Node {
 
-	private Integer key;
-	private Node leftChild;
-	private Node rightChild;
+	public int key;
+	public Node left;
+	public Node right;
 	
-	public Integer getKey() {
-		return this.key;
-	}
-	
-	public Node getLeftChild() {
-		return this.leftChild;
-	}
-	
-	public Node getRightChild() {
-		return this.rightChild;
-	}
-	
-	void setKey(Integer key) {
-		this.key = key;
-	}
-	
-	void setLeftChild(Node leftChild) {
-		this.leftChild = leftChild;
-	}
-	
-	void setRightChild(Node rightChild) {
-		this.rightChild = rightChild;
-	}
 }

@@ -6,66 +6,64 @@
 package bstProgram;
 
 import bst.Bst;
+import bst.BstUtils;
 
 public class BstProgram {
-
-	private static Bst tree;
 	
 	private static void bracketPreorder(Bst a) {
 		System.out.print("(");
-		if (!a.isEmptyTree()) {
-			if (!a.leftChild().isEmptyTree() || !a.rightChild().isEmptyTree()) {
-				System.out.print(" " + a.root() + " ");
-				bracketPreorder(a.leftChild());
+		if (!BstUtils.isEmptyTree(a)) {
+			if (!BstUtils.isEmptyTree(BstUtils.leftChild(a)) || !BstUtils.isEmptyTree(BstUtils.rightChild(a))) {
+				System.out.print(" " + BstUtils.root(a) + " ");
+				bracketPreorder(BstUtils.leftChild(a));
 				System.out.print(" ");
-				bracketPreorder(a.rightChild());
+				bracketPreorder(BstUtils.rightChild(a));
 			} else {
-				System.out.print(" " + a.root() + " ");
+				System.out.print(" " + BstUtils.root(a) + " ");
 			}
 		}
 		System.out.print(")");
 	}
 	
 	public static void main(String[] args) {
-		tree = new Bst();
+		Bst tree = BstUtils.emptyTree();
 
-		tree.insertKey(4);
-		tree.insertKey(4);
-		tree.insertKey(2);
-		tree.insertKey(6);
-		tree.insertKey(1);
-		tree.insertKey(3);
-		tree.insertKey(5);
-		tree.insertKey(7);
+		BstUtils.insertKey(tree, 4);
+		BstUtils.insertKey(tree, 4);
+		BstUtils.insertKey(tree, 2);
+		BstUtils.insertKey(tree, 6);
+		BstUtils.insertKey(tree, 1);
+		BstUtils.insertKey(tree, 3);
+		BstUtils.insertKey(tree, 5);
+		BstUtils.insertKey(tree, 7);
 		
 		bracketPreorder(tree); 
 		System.out.println();
 		
-		System.out.println("Search 1... " + tree.searchKey(1).root());
-		System.out.println("Search 2... " + tree.searchKey(2).root());
-		System.out.println("Search 3... " + tree.searchKey(3).root());
-		System.out.println("Search 4... " + tree.searchKey(4).root());
-		System.out.println("Search 5... " + tree.searchKey(5).root());
-		System.out.println("Search 6... " + tree.searchKey(6).root());
-		System.out.println("Search 7... " + tree.searchKey(7).root());
+		System.out.println("Search 1... " + BstUtils.root(BstUtils.searchKey(tree, 1)));
+		System.out.println("Search 2... " + BstUtils.root(BstUtils.searchKey(tree, 2)));
+		System.out.println("Search 3... " + BstUtils.root(BstUtils.searchKey(tree, 3)));
+		System.out.println("Search 4... " + BstUtils.root(BstUtils.searchKey(tree, 4)));
+		System.out.println("Search 5... " + BstUtils.root(BstUtils.searchKey(tree, 5)));
+		System.out.println("Search 6... " + BstUtils.root(BstUtils.searchKey(tree, 6)));
+		System.out.println("Search 7... " + BstUtils.root(BstUtils.searchKey(tree, 7)));
 
 		System.out.print("Delete 5...");
-		tree.deleteKey(5);
-		bracketPreorder(tree);
-		System.out.println();
+		BstUtils.deleteKey(tree, 5);
+		bracketPreorder(tree); System.out.println();
 		
 		System.out.print("Delete 6...");
-		tree.deleteKey(6);
+		BstUtils.deleteKey(tree, 6);
 		bracketPreorder(tree);
 		System.out.println();
 		
 		System.out.print("Delete 4...");
-		tree.deleteKey(4);
+		BstUtils.deleteKey(tree, 4);
 		bracketPreorder(tree);
 		System.out.println();
 		
 		System.out.print("Delete 2...");
-		tree.deleteKey(2);
+		BstUtils.deleteKey(tree, 2);
 		bracketPreorder(tree);
 		System.out.println();
 
