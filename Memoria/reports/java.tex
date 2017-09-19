@@ -18,7 +18,7 @@ Relacionado, se ha eliminado el procedure \texttt{error}, ya que la máquina vir
 %%%%%%%%%%%%%%%%%%%%%% Análisis de ventajas y desventajas %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Como se ha mencionado anteriormente, Java no permite la gestión manual de la memoria, por lo que los tipos de datos que eran punteros no se han podido "traducir" directamente. La gestión de memoria automática nos permite olvidarnos de las tareas de reservar espacio, gestionar la falta de memoria (ya que la propia máquina virtual de Java se encarga de lanzar la excepción \texttt{OutOfMemoryError}) cuando esto sucede) y liberar la memoria, posibilitando que nos centremos más en los algoritmos en sí. \\
 
-Por otro lado nos encontramos con que en Java el paso de parámetros es siempre por valor y no por referencia, lo que ha ocasionado problemas que no existían en Pascal para reestructurar el árbol al hacer una eliminación (explicaremos estos problemas más adelante cuando entremos en detalles de la implementación). \\
+Por otro lado nos encontramos con que en Java el paso de parámetros es siempre por valor y no por referencia, lo que ha ocasionado problemas que no existían en Pascal a la hora de manejar la estructura del árbol (explicaremos estos problemas más adelante cuando entremos en detalles de la implementación). \\
 
 Por último, cabe destacar que al utilizar clases y no estructuras y punteros, el código resultante es de más alto nivel y más legible. \\
 
@@ -27,9 +27,10 @@ En primer lugar hablaremos de la "traducción" de los tipos.
 \begin{itemize}
 	\item \texttt{tPosA}, al ser un puntero, desaparece.
 	\item \texttt{tNodoA} se convierte en la clase \texttt{Node}, con los mismos atributos que tenía como campos la estructura original. Siguiendo los principios de la orientación a objetos, los atributos son privados, pero tenemos getters públicos. Por otro lado, los setters tienen visibilidad paquete para que puedan ser usados desde la clase Bst, pero no desde el programa principal.
-	\item \texttt{tABB} se convierte en la clase Bst\footnote{Binary Search Tree}, que tiene un atributo \texttt{Node} representando la raíz del árbol. Todas las funciones y procedimientos definidos en el TAD de Pascal son métodos de esta clase.
+	\item \texttt{tABB} se convierte en la clase Bst\footnote{Binary Search Tree}, que tiene un atributo \texttt{Node} representando la raíz del árbol. De este modo, Bst actúa como un envoltorio y punto de acceso a la estructura de nodos. Todas las funciones y procedimientos definidos en el TAD de Pascal son métodos de esta clase.
 \end{itemize}
-De este modo, Bst actúa como un envoltorio y punto de acceso a la estructura de nodos. Hacerlo de esta forma nos permite realizar operaciones como la eliminación de la raíz.\\ % Explicar después
+Volviendo sobre los problemas de paso de parámetros mencionados anteriormente, tenemos que, en concreto, cuando un objeto se pasa como argumento, lo que se recibe es una "copia" del puntero a dicho objeto, por lo que todos los cambios realizados en ese puntero no se reflejan fuera del método. Es por esto que ha resultado necesario recurrir a "punteros indirectos" como utilizar los nodos padre para manejar a los hijos, o utilizar el objeto Bst que envuelve la raíz para insertar y eliminar la misma.\\ % Explicar después
+
 
 % Decisión respecto a la clave Integer cuando esté tomada
 

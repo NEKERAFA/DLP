@@ -31,35 +31,46 @@ public class Bst {
 		return this.root == null;
 	}
 
-	private void insertR(Node node, Integer key) {
+	// TODO usar nodo padre para poder tener node == null
+	// TODO Pasar parentNode como árbol permite insertar la raíz al tener un puntero indirecto a ella
+	// TODO inicialmente, node = root, parentNode = this
+	private void insertR(Node node, Bst parentNode, Integer key) {
 		// Insert in empty tree
-		if (node.getKey() == null) {
-			node.setKey(key);
+		if (node == null) {
+			// Insert root of the complete tree
+			if (parentNode.root == null) { 
+				parentNode.root = new Node();
+				parentNode.root.setKey(key);
+			// Insert regular node
+			} else if (parentNode.root.getLeftChild() == node) {
+				parentNode.root.setLeftChild(new Node());
+				parentNode.root.getLeftChild().setKey(key);
+			} else {
+				parentNode.root.setRightChild(new Node());
+				parentNode.root.getRightChild().setKey(key);
+			}
 		// Insert in left tree child TODO preguntar a Fer si es correcto
 		} else if (key < node.getKey()) {
-			if (node.getLeftChild() == null) { // TODO creamos el hijo primero desde el padre para que quede conectado
-				node.setLeftChild(new Node());
-			}
-			
-			insertR(node.getLeftChild(), key);
+			Bst aux = new Bst();
+			aux.root = node;
+			insertR(node.getLeftChild(), aux, key);
 		// Insert in right tree child
 		} else if (key > node.getKey()) {
-			if (node.getRightChild() == null) {
-				node.setRightChild(new Node());
-			}
-			
-			insertR(node.getRightChild(), key);
+			Bst aux = new Bst();
+			aux.root = node;
+			insertR(node.getRightChild(), aux, key);
 		}
 		// Duplicates are ignored
 	}
 	
 	private void insertI(Integer key) {
+		Node newNode = new Node();
+		newNode.setKey(key);
+		
 		// Insert in empty tree
-		if (this.root.getKey() == null) { 
-			this.root.setKey(key);
+		if (this.root == null) { 
+			this.root = newNode;
 		} else {
-			Node newNode = new Node();
-			newNode.setKey(key);
 			Node parent = null;
 			Node child = this.root;
 			
@@ -143,7 +154,8 @@ public class Bst {
 			parentNode.setRightChild(node.getLeftChild());
 		}
 	}
-	
+	// TODO si se pasa a clase estática, es posible que parentNode necesite ser un Bst como en la
+	// inserción recursiva
 	// parentNode: parent of the node to be deleted. Used to reorder the children of the node
 	// to be deleted.
 	private void deleteR(Node node, Node parentNode, Integer key) {
@@ -155,6 +167,7 @@ public class Bst {
 			} else {
 				// Delete node with at most one child
 				if (node.getLeftChild() == null) {
+					// Delete root of the total tree
 					if (parentNode == null) {
 						this.root = node.getRightChild();
 					// Check if node was a right or a left child
@@ -164,6 +177,7 @@ public class Bst {
 						parentNode.setRightChild(node.getRightChild());
 					}
 				} else if (node.getRightChild() == null) {
+					// Delete root of the total tree
 					if (parentNode == null) {
 						this.root = node.getLeftChild();
 					// Check if node was a right or a left child
