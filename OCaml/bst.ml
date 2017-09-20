@@ -1,3 +1,7 @@
+type bst =
+	 Empty
+	|Node of int * bst * bst;;
+
 let emptyTree = Empty;;
 
 (* Si el arbol de entrada esta vacio, peta *)
@@ -60,3 +64,6 @@ let rec delete_r key tree =
                                          else if right = Empty
                                             then left
                                             else del_aux left;;
+
+let deleteKey key tree =
+	delete_r key tree;;
