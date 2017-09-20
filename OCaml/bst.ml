@@ -41,4 +41,22 @@ let rec searchKeyR k = function
 let searchKey key tree =
     searchKeyR key tree;;
 
-let rec delete_r key = function
+let rec delete_r key tree =
+    let rec del_aux (Node(k,left,right)) =
+        match right with
+            Node(_,_,r) -> del_aux r
+            (* Devolvemos nodo con la clave que reemplazará a la eliminada,
+               los hijos izquierdos del nodo con la clave a eliminar y a la derecha
+               los hijos izquierdos de la clave sustituta*)
+            |Empty -> Node(k,left,leftChild tree)
+    in match tree with
+        Empty -> Empty (* La clave no estaba en el árbol *)
+        |Node(k,left,right) -> if key < k
+                               then Node(k,delete_r key left,right)
+                               else if key > k
+                                    then Node(k,left,delete_r key right)
+                                    else if left = Empty
+                                         then right
+                                         else if right = Empty
+                                            then left
+                                            else del_aux left;;
