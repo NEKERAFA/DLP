@@ -32,3 +32,12 @@ hijos del nodo encontrado con el resto del árbol (ie su padre)
 
 - Insertar_i no empieza creando un Bst porque si el árbol está vacío no lo necesita
 - La versión recursiva de insertar y buscar necesita más argumentos que la iterativa
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+- En la versión recursiva de Insertar hay que crear los hijos si no existieran antes de llamar de nuevo a la función.
+- En la versión iterativa de Insertar hay que crear los hijos si no existieran al momento de saltar al hijo.
+- Se ponen todos los métodos públicos dde nodo para que el código sea más parecido a Pascal.
+- Se asume que el arbol no va a tener una raiz nula siempre que se maneje por las funciones definidas.
+- Como arbol vacio es nodo null, necesitamos un puntero indirecto (Bst) para insertar un nuevo nodo
+
