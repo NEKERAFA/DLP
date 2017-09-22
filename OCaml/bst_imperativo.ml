@@ -9,7 +9,7 @@ let emptyTree () = ref Empty;;
 
 (* Si el arbol de entrada esta vacio, peta *)
 let leftChild a = match !a with
-	Node(_,left,_) -> left;;
+    Node(_,left,_) -> left;;
 
 let rightChild a = match !a with
     Node(_,_,right) -> right;;
@@ -18,5 +18,14 @@ let root a = match !a with
     Node(key,_,_) -> key;;
 
 let isEmptyTree a = match !a with
- 	Empty -> true
-	| _ -> false;;
+    Empty -> true
+    | _ -> false;;
+
+let search_i tree key =
+    let node = ref Empty in node := !tree;
+    while (!node <> Empty) && ((root node) <> key) do
+        if key < (root node)
+        then node := !(leftChild node)
+        else node := !(rightChild node)
+    done;
+    node;;
