@@ -9,7 +9,7 @@ let emptyTree () = ref Empty;;
 
 (* Si el arbol de entrada esta vacio, peta *)
 let leftChild a = match !a with
-	Node(_,left,_) -> left;;
+    Node(_,left,_) -> left;;
 
 let rightChild a = match !a with
     Node(_,_,right) -> right;;
@@ -21,7 +21,7 @@ let isEmptyTree a = match !a with
  	Empty -> true
 	| _ -> false;;
 
-let insertKeyI a key =
+let insert_i a key =
 	let newNode = ref (Node (key, (ref Empty), (ref Empty))) in
 	(* Insert in empty tree *)
 	if (!a = Empty) then
@@ -43,3 +43,16 @@ let insertKeyI a key =
 				(leftChild parent) := !newNode
 			else
 				(rightChild parent) := !newNode;;
+
+let insertKey = insert_i;;
+
+let search_i tree key =
+    let node = ref Empty in node := !tree;
+    while (!node <> Empty) && ((root node) <> key) do
+        if key < (root node)
+        then node := !(leftChild node)
+        else node := !(rightChild node)
+    done;
+    node;;
+
+let searchKey = search_i;;
