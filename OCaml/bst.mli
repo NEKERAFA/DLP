@@ -1,3 +1,8 @@
+(*
+ * Rafael Alcalde Azpiazu: rafael.alcalde.azpiazu (rafael.alcalde.azpiazu@udc.es)
+ * Eva Suárez García: eva.suarez.garcia (eva.suarez.garcia@udc.es)
+ *)
+
 type bst =
 	 Empty
 	|Node of int * bst * bst
