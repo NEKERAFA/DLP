@@ -47,7 +47,7 @@ let insert_i a key =
 let insertKey = insert_i;;
 
 let search_i tree key =
-    let node = ref Empty in node := !tree;
+    let node = ref !tree in
     while (!node <> Empty) && ((root node) <> key) do
         if key < (root node)
         then node := !(leftChild node)
@@ -56,3 +56,57 @@ let search_i tree key =
     node;;
 
 let searchKey = search_i;;
+
+let delete_i tree key =
+	let rm = ref (!tree) in
+	let parentRm = ref Empty in
+	let notEmptyChild = ref Empty in
+	let maxLeftChild = ref Empty in
+
+	(* Search for the node to remove *)
+	while ((!rm <> Empty) && ((root rm) <> key)) do
+		parentRm := !rm;
+		if (key < (root rm)) then
+			rm := !(leftChild rm)
+		else
+			rm := !(rightChild rm)
+	done;
+
+	(* If the key isn't in the tree, don't do anything *)
+	if (!rm <> Empty) then
+		let numChildren = ref 0 in
+		if (!(leftChild rm) <> Empty) then
+			numChildren := (!numChildren + 1);
+		if (!(rightChild rm) <> Empty) then
+			numChildren := (!numChildren + 1);
+
+		match !numChildren with
+		 	0 -> if (!parentRm = Empty) then
+			     	tree := Empty
+			     else if ((leftChild parentRm) = rm) then
+				 	(leftChild parentRm) := Empty
+				 else
+				 	(rightChild parentRm) := Empty;
+			| 1 -> if (!(leftChild rm) = Empty) then
+			     	notEmptyChild := !(rightChild rm)
+				 else
+				 	notEmptyChild := !(leftChild rm);
+
+				 if (!parentRm = Empty) then
+				 	tree := !notEmptyChild
+				 else if ((leftChild parentRm) = rm) then (*** TODO Comprobar si la comparación tiene que ser por contenido *)
+				 	(leftChild parentRm) := !notEmptyChild
+				 else
+				 	(rightChild parentRm) := !notEmptyChild;
+			| 2 -> parentRm := !rm;
+			     maxLeftChild := !(leftChild rm);
+				 while (!(rightChild maxLeftChild) <> Empty) do
+				 	parentRm := !maxLeftChild;
+					maxLeftChild := !(rightChild maxLeftChild)
+				 done;
+
+				 rm := Node((root maxLeftChild), (leftChild rm), (rightChild rm));
+				 if (!parentRm = !rm) then
+				 	(leftChild parentRm) := !(leftChild maxLeftChild)
+				 else
+				 	(rightChild parentRm) := !(leftChild maxLeftChild);;
