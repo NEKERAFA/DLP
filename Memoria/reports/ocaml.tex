@@ -1,6 +1,12 @@
 \section{Implementación en OCaml}
+\hspace{2em}Para las pruebas en este lenguaje se usó el intérprete top-level \texttt{ocaml} en su versión 4.02.3 sobre Ubuntu Mate 16.04 (amd64).
 
 \subsection{Descripción}
+\hspace{2em}OCaml (Objetive Caml) es un lenguaje de programación de alto nivel que sigue principalmente el paradigma declarativo funcional, pero contiene métodos para la programación imperativa estructurada y orientación a objetos basado en clases. Basado en los Meta-Lenguajes, OCaml es la actual implementación de Caml (Categorical abstract machine language). \\
+
+A pesar de que es un lenguaje de propósito general, el código fuente se puede compilar a bytecode para ser ejecutado sobre un intérprete top-level\footnote{El compilador es \texttt{ocamlc} y el intérprete top-level que ejecuta el código es \texttt{ocamlrun}.} que es el que está diseñado para la plataforma final, o mediante el compilador stand-alone\footnote{El compilador es \texttt{ocamlopt} y se ejecuta en la propia máquina.} que proporciona código máquina para la plataforma actual. \\
+
+Aunque es un lenguaje de tipado estático y fuerte, OCaml presenta un motor inferencial de tipos, pudiendo definir variables y tipos de datos polimórficos en tiempo de compilación. El compilador nativo y el intérprete top-level son los responsables de la gestión y asignación de memoria al compilar y en la ejecución de código OCaml.
 
 \subsection{Análisis}
 
