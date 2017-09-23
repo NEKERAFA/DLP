@@ -3,7 +3,7 @@
  * Eva Suárez García: eva.suarez.garcia (eva.suarez.garcia@udc.es)
  *)
 
-#use "bst_imperativo.ml";;
+open Bst;;
 
 let rec bracketPreorder t =
 	print_char '(';

@@ -3,75 +3,163 @@
  * Eva Suárez García: eva.suarez.garcia (eva.suarez.garcia@udc.es)
  *)
 
-type bst =
-    Empty
-    |Node of int * bst * bst;; (* Esto no debería estar aquí *)
+type bst = Empty | Node of int * bst ref * bst ref;; (* Esto no debería estar aquí *)
 
-let emptyTree = Empty;;
+let emptyTree () = ref Empty;;
 
 (* Si el arbol de entrada esta vacio, peta *)
-let leftChild = function
+let leftChild a = match !a with
     Node(_,left,_) -> left;;
 
-let rightChild = function
+let rightChild a = match !a with
     Node(_,_,right) -> right;;
 
-let root = function
+let root a = match !a with
     Node(key,_,_) -> key;;
 
-let isEmptyTree = function
-    Empty -> true
-    |_ -> false;;
+let isEmptyTree a = match !a with
+ 	Empty -> true
+	| _ -> false;;
 
-(* La función devuelve el nodo a insertar cuando el árbol está vacío.
-   Si no está vacío y la clave coincide, devuelve el propio nodo.
-   Cuando no está vacío y la clave no coincide, devuelve el nodo
-   modificado para que el subárbol correspondiente sea el resultado
-   de la llamada recursiva *)
-let rec insertKeyR k = function
-    Empty -> Node(k,Empty,Empty)
-    |Node(key,left,right) -> if k < key
-                             then Node(key,insertKeyR k left, right)
-                             else if k > key
-                                  then Node(key,left,insertKeyR k right)
-                                  else Node(key,left,right);; (* Duplicates are ignored *)
+let rec insert_r a key =
+	match !a with
+		Empty -> a := Node(key, ref Empty, ref Empty)
+		| Node(k,left,right) -> if (key < k)
+								then insert_r left key
+				 				else if (key > k)
+								then insert_r right key;; (* Duplicates are ignored *)
 
-let insertKey key tree =
-    insertKeyR key tree;;
+let insert_i a key =
+	let newNode = ref (Node (key, (ref Empty), (ref Empty))) in
+	(* Insert in empty tree *)
+	if (!a = Empty) then
+		a := !newNode
+	else
+		let parent = ref Empty in
+		let child = ref (!a) in
+		(* Search for the key's right place in the tree *)
+		while (((!child) <> Empty) && ((root child) <> key)) do
+			parent := !child;
+			if (key < (root child)) then
+				child := !(leftChild child)
+			else
+				child := !(rightChild child)
+		done;
 
-let rec searchKeyR k = function
-    Empty -> Empty
-    |Node(key,left,right) -> if k = key
-                             then Node(key,left,right)
-                             else if k < key
-                                then searchKeyR k left
-                                else searchKeyR k right;;
+		if (!child = Empty) then
+			if (key < (root parent)) then
+				(leftChild parent) := !newNode
+			else
+				(rightChild parent) := !newNode;;
 
-let searchKey key tree =
-    searchKeyR key tree;;
+let insertKey = insert_r;;
 
-let rec delete_r key tree = (* El segundo argumento es el nodo padre *)
-    let rec del_aux node parentNode =
-        match (rightChild node) with
-        (* Sabemos que node nunca va a ser vacío: en la primera llamada porque
-        solo se llama a esta funcion si el nodo tiene dos hijos, y en las
-        llamadas recursivas porque la llamada solo se hace si el hijo derecho no es vacio *)
-            Node(key,left,right) -> let (foundK,newRight) = del_aux (rightChild node) node
-                                    in foundK, Node(root parentNode,leftChild parentNode,newRight)
-            |Empty -> root node, leftChild node
-    in match tree with
-        Empty -> Empty (* La clave no estaba en el árbol *)
-        |Node(k,left,right) -> if key < k
-                               then Node(k,delete_r key left,right)
+let rec search_r a k =
+	match !a with
+		Empty -> ref Empty
+		| Node(key,left,right) -> if (k = key)
+								  then let node = ref Empty in
+								  		node := Node(key,left,right);
+										node
+								  else if (k < key)
+								  	then search_r left k
+								  	else search_r right k;;
+
+let search_i tree key =
+    let node = ref !tree in
+    while (!node <> Empty) && ((root node) <> key) do
+        if key < (root node)
+        then node := !(leftChild node)
+        else node := !(rightChild node)
+    done;
+    node;;
+
+let searchKey = search_r;;
+
+let rec delete_r tree key =
+	let rec del_aux node parentNode =
+	(* Sabemos que node nunca va a ser vacío: en la primera llamada porque
+	solo se llama a esta funcion si el nodo tiene dos hijos, y en las
+	llamadas recursivas porque la llamada solo se hace si el hijo derecho no es vacio *)
+		match !(rightChild node) with
+			Node(key,left,right) -> let (foundK,newRight) = del_aux (rightChild node) node in
+									let newLeft = (ref Empty) in
+									newLeft := Node(root parentNode,leftChild parentNode,newRight);
+									foundK, newLeft
+			|Empty -> root node, leftChild node
+	in match !tree with
+	 	Empty -> () (* La clave no estaba en el árbol *)
+		|Node(k,left,right) -> if key < k
+                               then delete_r left key
                                else if key > k
-                                    then Node(k,left,delete_r key right)
-                                    else if left = Empty (* A partir de aquí ya hemos encontrado el nodo a eliminar (tree) *)
-                                         then right
-                                         else if right = Empty
-                                            then left
+                                    then delete_r right key
+                                    else if !left = Empty (* A partir de aquí ya hemos encontrado el nodo a eliminar (tree) *)
+                                         then tree := !right
+                                         else if !right = Empty
+                                            then tree := !left
                                             else let (foundk,newleft) = del_aux left left
-                                                in Node(foundk,newleft,right);;
+                                                in tree := Node(foundk,newleft,right);;
 
-let deleteKey key tree =
-	delete_r key tree;;
-1
+let delete_i tree key =
+	let rm = ref (!tree) in
+	let parentRm = ref Empty in
+	let notEmptyChild = ref Empty in
+	let maxLeftChild = ref Empty in
+    let parentMaxLeftChild = ref Empty in (* Variable auxiliar nueva *)
+
+	(* Search for the node to remove *)
+	while ((!rm <> Empty) && ((root rm) <> key)) do
+		parentRm := !rm;
+		if (key < (root rm)) then
+			rm := !(leftChild rm)
+		else
+			rm := !(rightChild rm)
+	done;
+
+	(* If the key isn't in the tree, don't do anything *)
+	if (!rm <> Empty) then
+		let numChildren = ref 0 in
+		if (!(leftChild rm) <> Empty) then
+			numChildren := (!numChildren + 1);
+		if (!(rightChild rm) <> Empty) then
+			numChildren := (!numChildren + 1);
+
+		match !numChildren with
+		 	0 -> if (!parentRm = Empty) then
+			     	tree := Empty
+			     else if ((leftChild parentRm) = rm) then
+				 	(leftChild parentRm) := Empty
+				 else
+				 	(rightChild parentRm) := Empty;
+			| 1 -> if (!(leftChild rm) = Empty) then
+			     	notEmptyChild := !(rightChild rm)
+				 else
+				 	notEmptyChild := !(leftChild rm);
+
+				 if (!parentRm = Empty) then
+				 	tree := !notEmptyChild
+				 else if ((leftChild parentRm) = rm) then (*** TODO Comprobar si la comparación tiene que ser por contenido *)
+				 	(leftChild parentRm) := !notEmptyChild
+				 else
+				 	(rightChild parentRm) := !notEmptyChild;
+			| 2 -> if !parentRm = Empty then parentRm := !tree;
+                 parentMaxLeftChild := !rm;
+			     maxLeftChild := !(leftChild rm);
+				 while (!(rightChild maxLeftChild) <> Empty) do
+				 	parentMaxLeftChild := !maxLeftChild;
+					maxLeftChild := !(rightChild maxLeftChild)
+				 done;
+                 (* Cambiamos el nodo desde el padre (cambiar directamente rm no funciona) *)
+                 if ((root rm) < (root parentRm)) then
+				    (leftChild parentRm) := Node((root maxLeftChild), (leftChild rm), (rightChild rm))
+                 else if ((root rm) > (root parentRm)) then
+                    (rightChild parentRm) := Node((root maxLeftChild), leftChild rm, rightChild rm)
+                 else
+                    tree := Node(root maxLeftChild, leftChild rm, rightChild rm);
+
+				 if (!parentMaxLeftChild = !rm) then
+				 	(leftChild parentMaxLeftChild) := !(leftChild maxLeftChild)
+				 else
+				 	(rightChild parentMaxLeftChild) := !(leftChild maxLeftChild);;
+
+let deleteKey = delete_r;;

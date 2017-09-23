@@ -3,15 +3,12 @@
  * Eva Suárez García: eva.suarez.garcia (eva.suarez.garcia@udc.es)
  *)
 
-type bst =
-	 Empty
-	|Node of int * bst * bst
-
-val emptyTree: bst
-val insertKey: int -> bst -> bst
-val leftChild: bst -> bst
-val rightChild: bst -> bst
-val root: bst -> int
-val isEmptyTree: bst -> bool
-val searchKey: int -> bst -> bst
-val deleteKey: int -> bst -> bst
+type bst
+val emptyTree : unit -> bst ref
+val leftChild : bst ref -> bst ref
+val rightChild : bst ref -> bst ref
+val root : bst ref -> int
+val isEmptyTree : bst ref -> bool
+val insertKey : bst ref -> int -> unit
+val searchKey : bst ref -> int -> bst ref
+val deleteKey : bst ref -> int -> unit
