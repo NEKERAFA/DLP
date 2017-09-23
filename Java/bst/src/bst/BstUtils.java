@@ -9,13 +9,8 @@ public final class BstUtils {
 
 	private BstUtils() {}
 
-	// TODO deberíamos plantearnos poner un método arbolVacio de todos modos?
-	// Rollo poner a nulo el nodo y via (aunque parece un desperdicio de memoria tremendo)
-	// Más bien poner todos los atributos del nodo a null
 	public static Bst emptyTree() {
-		Bst tree = new Bst();
-		tree.root = null;
-		return tree;
+		return new Bst();
 	}
 	
 	public static int root(Bst tree) {
@@ -38,9 +33,12 @@ public final class BstUtils {
 		return tree.root == null;
 	}
 
-	// TODO usar nodo padre para poder tener node == null
-	// TODO Pasar parentNode como árbol permite insertar la raíz al tener un puntero indirecto a ella
-	// TODO inicialmente, node = root, parentNode = this
+	// TODO tree is a Bst object parent to the node parameter. It is necessary to use it
+	// in order to insert any nodes as it acts as an indirect pointer to the node we want
+	// to insert, which means node is just a copy of the pointer we want to change, while
+	// tree contains the actual pointer, accesible through its root
+	// TODO In the first call, node == root node of the tree we want to insert into, and
+	// tree == the tree itself. This is needed to insert the root node when there is none
 	private static void insertR(Node node, Bst tree, int key) {
 		// Insert in empty tree
 		if (node == null) {
@@ -125,8 +123,6 @@ public final class BstUtils {
 		return result;
 	}
 	
-	// TODO la definición mal hecha del árbol vacío también hace que el resultado al no encontrar
-	// una clave sea distinto entre la versión iterativa y la recursiva
 	private static Bst searchI(Bst tree, int key) {
 		Node node = tree.root;
 		
@@ -165,8 +161,6 @@ public final class BstUtils {
 		}
 	}
 
-	// TODO si se pasa a clase estática, es posible que parentNode necesite ser un Bst como en la
-	// inserción recursiva
 	// parentNode: parent of the node to be deleted. Used to reorder the children of the node
 	// to be deleted.
 	private static void deleteR(Node node, Bst tree, int key) {
@@ -183,7 +177,7 @@ public final class BstUtils {
 				// Delete node with at most one child
 				if (node.left == null) {
 					// Delete root of the total tree
-					if (tree.root == null) {
+					if (tree.root == node) {
 						tree.root = node.right;
 					// Check if node was a right or a left child
 					} else if (tree.root.left == node) {
@@ -193,7 +187,7 @@ public final class BstUtils {
 					}
 				} else if (node.right == null) {
 					// Delete root of the total tree
-					if (tree.root == null) {
+					if (tree.root == node) {
 						tree.root = node.left;
 					// Check if node was a right or a left child
 					} if (tree.root.left == node) {
@@ -242,7 +236,7 @@ public final class BstUtils {
 				// Remove leaf node
 				case 0:
 					if (parentRm == null) {
-						tree.root = null; // TODO no corresponde con la definición de árbol vacío del constructor
+						tree.root = null; 
 					} else if (parentRm.left == rm) {
 						parentRm.left = null;
 					} else {

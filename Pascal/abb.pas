@@ -255,13 +255,13 @@ begin
 				else
 					hijoNoVacio := sup^.izdo;
 
-					if (pSup = nil) then
-						A := hijoNoVacio {borramos la raiz reemplazándola con el único hijo no vacío}
-					else if (pSup^.izdo = sup) then
-						pSup^.izdo := hijoNoVacio
-					else
-						pSup^.dcho := hijoNoVacio;
-					end; {case 1}
+				if (pSup = nil) then
+					A := hijoNoVacio {borramos la raiz reemplazándola con el único hijo no vacío}
+				else if (pSup^.izdo = sup) then
+					pSup^.izdo := hijoNoVacio
+				else
+					pSup^.dcho := hijoNoVacio;
+				end; {case 1}
 
 			{suprimir nodo con dos hijos}
 			2 : begin

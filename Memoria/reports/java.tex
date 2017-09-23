@@ -7,50 +7,51 @@
 Como en sus inicios se pensó en que fuera un lenguaje de propósito general, la compilación del código fuente se traduce a bytecode java, el cual es ejecutado sobre una máquina virtual que sí está diseñada para la plataforma final. \\
 
 Su sintaxis deriva en gran medida de C++, siendo Java un lenguaje de tipado estático y fuerte. Es la propia máquina virtual la encargada de la gestión de memoria mediante un recolector automático de basura, el cual es responsable de gestionar el ciclo de vida, reservando memoria cuando el programador crea un objeto, y liberando memoria cuando se deja de referenciar completamente el objeto usado.
-
+% TODO comentar quizás el paso por valor de los parámetros
 \subsection{Análisis}
 
 \subsubsection{Análisis de ventajas y desventajas}
-\hspace{2em}Como se ha mencionado anteriormente, Java no permite la gestión manual de la memoria, por lo que los tipos de datos que eran punteros no se han podido "traducir" directamente. La gestión de memoria automática nos permite olvidarnos de las tareas de reservar espacio, gestionar la falta de memoria (ya que la propia máquina virtual de Java se encarga de lanzar la excepción \texttt{OutOfMemoryError}) cuando esto sucede) y liberar la memoria, posibilitando que nos centremos más en los algoritmos en sí. \\
+\hspace{2em}Como se ha mencionado anteriormente, Java no permite la gestión manual de la memoria, por lo que los tipos de datos que eran punteros no se han podido "traducir" directamente. La gestión de memoria automática nos permite olvidarnos de las tareas de reservar espacio, gestionar la falta de memoria (ya que la propia máquina virtual de Java se encarga de lanzar la excepción \texttt{OutOfMemoryError} cuando esto sucede) y liberar la memoria, posibilitando que nos centremos más en los algoritmos en sí. \\
 
 Por otro lado nos encontramos con que en Java el paso de parámetros es siempre por valor y no por referencia, lo que ha ocasionado problemas que no existían en Pascal a la hora de manejar la estructura del árbol (explicaremos estos problemas más adelante cuando entremos en detalles de la implementación). \\
 
 Por último, cabe destacar que al utilizar clases y no estructuras y punteros, el código resultante es de más alto nivel y más legible. \\
-
-% Comentar que se puede hacer árbol genérico, poner los métodos en el árbol, atributos privados...
 
 \subsubsection{Análisis de implementación}
 
 \hspace{2em}En primer lugar hablaremos de la ``traducción'' de los tipos.
 \begin{itemize}
 	\item \texttt{tPosA}, al ser un puntero, desaparece.
-	\item \texttt{tNodoA} se convierte en la clase \texttt{Node}, con los mismos atributos que tenía como campos en la estructura original. Para que se mantenga lo más parecido a Pascal, sus atributos son públicos y no existe ningún método de getter ni setter.
-	\item \texttt{tABB} se convierte en la clase \texttt{Bst}\footnote{Binary Search Tree}, el cual solo contiene un atributo de tipo \texttt{Node}. De este modo
+	\item \texttt{tNodoA} se convierte en la clase \texttt{Node}, con los mismos atributos que tenía como campos en la estructura original. Con el fin de ser fieles a la implementación en Pascal, todos los atributos son públicos.
+	\item \texttt{tABB} se convierte en la clase \texttt{Bst}\footnote{Binary Search Tree}, el cual solo contiene un atributo de tipo \texttt{Node}. De este modo, Bst actúa como un envoltorio y punto de acceso a la estructura de nodos.
 \end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-En primer lugar hablaremos de la "traducción" de los tipos. 
-\begin{itemize}
-	\item \texttt{tPosA}, al ser un puntero, desaparece.
-	\item \texttt{tNodoA} se convierte en la clase \texttt{Node}, con los mismos atributos que tenía como campos la estructura original. Siguiendo los principios de la orientación a objetos, los atributos son privados, pero tenemos getters públicos. Por otro lado, los setters tienen visibilidad paquete para que puedan ser usados desde la clase Bst, pero no desde el programa principal.
-	\item \texttt{tABB} se convierte en la clase Bst\footnote{Binary Search Tree}, que tiene un atributo \texttt{Node} representando la raíz del árbol. De este modo, Bst actúa como un envoltorio y punto de acceso a la estructura de nodos. Todas las funciones y procedimientos definidos en el TAD de Pascal son métodos de esta clase.
-\end{itemize}
-Volviendo sobre los problemas de paso de parámetros mencionados anteriormente, tenemos que, en concreto, cuando un objeto se pasa como argumento, lo que se recibe es una "copia" del puntero a dicho objeto, por lo que todos los cambios realizados en ese puntero no se reflejan fuera del método. Es por esto que ha resultado necesario recurrir a "punteros indirectos" como utilizar los nodos padre para manejar a los hijos, o utilizar el objeto Bst que envuelve la raíz para insertar y eliminar la misma.\\ % Explicar después
+Volviendo sobre los problemas de paso de parámetros mencionados anteriormente, tenemos que, en concreto, cuando un objeto se pasa como argumento, lo que se recibe es una "copia" del puntero a dicho objeto, por lo que todos los cambios realizados en ese puntero no se reflejan fuera del método. Es por esto que ha resultado necesario recurrir a "punteros indirectos" como utilizar los nodos padre para manejar a los hijos, o utilizar el objeto Bst que envuelve la raíz para insertar y eliminar la misma.\\ % TODO manejar a los hijos = moverlos, eliminarlos, explicar mejor
 
+Ahora hablemos de la adaptación de los procedimientos y funciones. Todos ellos se han convertido en métodos estáticos de una clase de utilidad. Los procedimientos y funciones que se mantenían como privados en Pascal siguen siendo privados en Java.
 
-% Decisión respecto a la clave Integer cuando esté tomada
-
-Ahora hablemos de la adaptación de los procedimientos y funciones.
 \begin{itemize}
 % Decisión respecto a arbolVacio cuando esté tomada
+	\item \texttt{arbolVacio}: Crea un nuevo objeto Bst y lo devuelve. Difiere de la implementación en Pascal en que no inicializa un árbol pasado por parámetro, ya que si la inicialización se hiciera de esta forma no se reflejaría fuera del método por el paso de parámetros por valor de Java.
 	\item \texttt{hijoIzquierdo}, \texttt{hijoDerecho} y \texttt{raiz}: Devuelven los atributos correspondientes del nodo alojado en la raíz del árbol. En el caso de los dos primeros, se devuelven envueltos en un nuevo objeto Bst para seguir la interfaz declarada en Pascal en cuanto al tipo devuelto.
-	\item \texttt{esArbolVacio}: Ya que para que el método pueda ser llamado el propio árbol no puede ser nulo, se comprueba si % Decisión respecto al criterio de árbol vacío cuando esté tomada
-	\item \texttt{insertarClave}: % Si tomamos que en árbol vacío root == null, al insertar en árbol vacío sí que hay que crear un nodo, lo que cambiaría la implementación de insertar iterativo y la haría más acorde a la implementación de Pascal
-	\item \texttt{buscarClave}: Al igual que con \texttt{hijoIzquierdo} y \texttt{hijoDerecho}, el nodo a devolver se envuelve en un objeto Bst para cumplir con la interfaz de Pascal.
-	\item \texttt{eliminarClave}: Tanto la adaptación de la versión recursiva de este procedimiento como del procedimiento auxiliar \texttt{sup2} reciben ahora un argumento más: el padre del nodo con mayor clave del subárbol izquierdo, necesario para poder reorganizar el árbol, ya que el paso por valor de Java no permite hacerlo de otra forma. % Explicar infinitamente mejor cuando no tenga tanta hambre
-	% Decisión respecto a si función lambda o no cuando esté tomada
+	\item \texttt{esArbolVacio}: Se comprueba si el nodo alojado en la raíz es null.
+	\item \texttt{insertarR}: En lugar de recorrer el árbol con el equivalente a un tABB, utilizamos un Node. Además, añadimos un nuevo argumento, de tipo Bst, representando el árbol cuya raíz es el nodo padre del Node. Debido al paso por valor de Java, el argumento Node no es más que una copia del puntero que queremos actualizar, por lo que no podemos hacer los cambios sobre este argumento. En su lugar, utilizamos el Bst padre, que sí contiene el puntero real que queremos actualizar accesible a través de su raíz. Inicialmente, Bst es el propio árbol en el que hay que insertar, lo que nos permite tener acceso real a la raíz en caso de que no exista.
+	\item \texttt{insertarI}: De modo similar a la anterior, recibir el propio árbol nos permite insertar la raíz si esta no existiera, lo que resultaría imposible de recibir directamente el nodo raíz.
+	\item \texttt{buscarR} y \texttt{buscarI}: Al igual que con \texttt{hijoIzquierdo} y \texttt{hijoDerecho}, el nodo a devolver se envuelve en un objeto Bst para cumplir con la interfaz de Pascal.
+	\item \texttt{sup2}: La adaptación de este procedimiento recibe tres argumentos. Por un lado, el nodo que se va a eliminar para que podamos cambiar su clave por la mayor clave de su subárbol izquierdo. Por otro lado, el nodo que se utiliza para ir recorriendo el árbol hacia la derecha y el padre de dicho nodo. De esta forma, podemos mover los hijos izquierdos del nodo al nodo padre, algo que, de nuevo, no podríamos hacer si sólo tuviéramos el nodo en sí. % TODO Decisión respecto a si función lambda o no cuando esté tomada
+	\item \texttt{eliminarR}: Este método, además de la clave a eliminar, recibe un objeto Node que se usa para recorrer el árbol en busca del nodo a eliminar y un objeto Bst cuya raíz es el nodo padre, en la línea de insertR. Las diferencias entre la adaptación y el original se concentran en la eliminación de un nodo que tiene un hijo como mucho. Necesitamos añadir comprobaciones de si estamos eliminando la raíz del árbol completo, y en caso contrario si el nodo que estamos eliminando era un hijo izquierdo o derecho, ya que la reestructuración del árbol seguimos haciéndola desde el padre.
+	\item \texttt{eliminarI}: Se adaptó de Pascal sin cambios relevantes.
+	
 \end{itemize}
-Además cabe destacar que las versiones iterativas de las funciones necesitan menos argumentos que su versión en Pascal, ya que no necesitan recibir el árbol a tratar.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Posibles mejoras}
+\hspace{2em}Al tener que respetar la implementación de Pascal, no han podido aprovecharse algunas de las ventajas de la orientación a objetos que habrían hecho la implementación en Java más natural y segura.\\
+
+\begin{itemize}
+	\item Los atributos podrían haberse puesto como privados, implementando tan solo los getters y setters necesarios con la visibilidad apropiada para que el árbol no pudiera ser modificado desde el programa principal sin usar los métodos definidos para tal efecto. De esta forma, podría garantizarse que el árbol siempre mantuviera la estructura propia de un árbol binario de búsqueda.
+	\item Los métodos podrían haberse implementado como propios de la clase Bst, en lugar de en una clase aparte. De este modo recibirían menos parámetros (ya que no necesitarían recibir el árbol a tratar) y la implementación sería más natural y propia de la orientación a objetos.
+	\item Java nos permite definir las clases como paramétricas, lo que nos permitiría no tener que definir un árbol binario de búsqueda para cada tipo de clave, sino uno general en el que el tipo de clave se especificaría en el momento de declarar la variable Bst.
+\end{itemize}
