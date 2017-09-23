@@ -62,6 +62,7 @@ let delete_i tree key =
 	let parentRm = ref Empty in
 	let notEmptyChild = ref Empty in
 	let maxLeftChild = ref Empty in
+    let parentMaxLeftChild = ref Empty in (* Variable auxiliar nueva *)
 
 	(* Search for the node to remove *)
 	while ((!rm <> Empty) && ((root rm) <> key)) do
@@ -98,15 +99,22 @@ let delete_i tree key =
 				 	(leftChild parentRm) := !notEmptyChild
 				 else
 				 	(rightChild parentRm) := !notEmptyChild;
-			| 2 -> parentRm := !rm;
+			| 2 -> if !parentRm = Empty then parentRm := !tree;
+                 parentMaxLeftChild := !rm;
 			     maxLeftChild := !(leftChild rm);
 				 while (!(rightChild maxLeftChild) <> Empty) do
-				 	parentRm := !maxLeftChild;
+				 	parentMaxLeftChild := !maxLeftChild;
 					maxLeftChild := !(rightChild maxLeftChild)
 				 done;
+                 (* Cambiamos el nodo desde el padre (cambiar directamente rm no funciona) *)
+                 if ((root rm) < (root parentRm)) then
+				    (leftChild parentRm) := Node((root maxLeftChild), (leftChild rm), (rightChild rm))
+                 else if ((root rm) > (root parentRm)) then
+                    (rightChild parentRm) := Node((root maxLeftChild), leftChild rm, rightChild rm)
+                 else
+                    tree := Node(root maxLeftChild, leftChild rm, rightChild rm);
 
-				 rm := Node((root maxLeftChild), (leftChild rm), (rightChild rm));
-				 if (!parentRm = !rm) then
-				 	(leftChild parentRm) := !(leftChild maxLeftChild)
+				 if (!parentMaxLeftChild = !rm) then
+				 	(leftChild parentMaxLeftChild) := !(leftChild maxLeftChild)
 				 else
-				 	(rightChild parentRm) := !(leftChild maxLeftChild);;
+				 	(rightChild parentMaxLeftChild) := !(leftChild maxLeftChild);;

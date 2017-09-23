@@ -40,20 +40,19 @@ print_string ("Search 5... " ^ (string_of_int (root (searchKey tree 5))) ^ "\n")
 print_string ("Search 6... " ^ (string_of_int (root (searchKey tree 6))) ^ "\n");;
 print_string ("Search 7... " ^ (string_of_int (root (searchKey tree 7))) ^ "\n");;
 
-(*
+
 print_string "Delete 5...";
-deleteKey tree 5;;
+delete_i tree 5;;
 bracketPreorder tree;; print_string "\n";;
 
 print_string "Delete 6...";
-deleteKey tree 6;;
+delete_i tree 6;;
 bracketPreorder tree;; print_string "\n";;
 
 print_string "Delete 4...";
-deleteKey tree 4;;
+delete_i tree 4;;
 bracketPreorder tree;; print_string "\n";;
 
 print_string "Delete 2...";
-deleteKey tree 2;;
+delete_i tree 2;;
 bracketPreorder tree;; print_string "\n";;
-*)
