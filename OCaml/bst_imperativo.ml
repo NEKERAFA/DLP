@@ -118,3 +118,5 @@ let delete_i tree key =
 				 	(leftChild parentMaxLeftChild) := !(leftChild maxLeftChild)
 				 else
 				 	(rightChild parentMaxLeftChild) := !(leftChild maxLeftChild);;
+
+let deleteKey = delete_i;;

@@ -1,5 +1,5 @@
 \section{Implementación en Java}
-\hspace{2em}Para este lenguaje se usó el compilador \texttt{javac} en su versión 1.8.0\_144. %Falta el SO
+\hspace{2em}Para las pruebas en este lenguaje se usó el compilador \texttt{javac} en su versión 1.8.0\_144 sobre Ubuntu Mate 16.04 (amd64).
 
 \subsection{Descripción}
 \hspace{2em}Java es un lenguaje de programación de alto nivel que sigue el paradigma de orientación a objetos basada en clases, aunque a día de hoy las últimas versiones ya incluyen elementos de otros paradigmas, como funciones-lambda. \\
@@ -8,15 +8,10 @@ Como en sus inicios se pensó en que fuera un lenguaje de propósito general, la
 
 Su sintaxis deriva en gran medida de C++, siendo Java un lenguaje de tipado estático y fuerte. Es la propia máquina virtual la encargada de la gestión de memoria mediante un recolector automático de basura, el cual es responsable de gestionar el ciclo de vida, reservando memoria cuando el programador crea un objeto, y liberando memoria cuando se deja de referenciar completamente el objeto usado.
 
-\subsection{Análisis del código} % Quizás quedara mejor poner primero imperativo ya que se supone que es la clase más general
-\hspace{2em}Dadas las diferencias entre Pascal (lenguaje estructurado imperativo) y Java (lenguaje orientado a objetos imperativo), la estructura \texttt{tNodoA} se ha traducido en la clase \texttt{Node}, que sigue conteniendo los atributos \texttt{key}, \texttt{rightChild} y \texttt{leftChild}. Como las clases son más abstactas que las estructuras, la programación resultante es de alto nivel y más legible. \\
+\subsection{Análisis}
 
-Otro elemento que ha cambiado son los punteros y la gestión de memoria manual en Pascal. En Java no hay elementos para manipulación de bajo nivel, por lo que la gestión de memoria es automatizada por la máquina virtual. Esto hace que desaparezca el uso de los punteros \texttt{tPosA}. \\
-
-Relacionado, se ha eliminado el procedure \texttt{error}, ya que la máquina virtual de Java, cuando se queda sin memoria, lanza la excepción \texttt{OutOfMemoryError}. También se ha eliminado la función \texttt{crearNodo}, que se traduce en el constructor de la clase \texttt{Node} en Java.
-
-%%%%%%%%%%%%%%%%%%%%%% Análisis de ventajas y desventajas %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Como se ha mencionado anteriormente, Java no permite la gestión manual de la memoria, por lo que los tipos de datos que eran punteros no se han podido "traducir" directamente. La gestión de memoria automática nos permite olvidarnos de las tareas de reservar espacio, gestionar la falta de memoria (ya que la propia máquina virtual de Java se encarga de lanzar la excepción \texttt{OutOfMemoryError}) cuando esto sucede) y liberar la memoria, posibilitando que nos centremos más en los algoritmos en sí. \\
+\subsubsection{Análisis de ventajas y desventajas}
+\hspace{2em}Como se ha mencionado anteriormente, Java no permite la gestión manual de la memoria, por lo que los tipos de datos que eran punteros no se han podido "traducir" directamente. La gestión de memoria automática nos permite olvidarnos de las tareas de reservar espacio, gestionar la falta de memoria (ya que la propia máquina virtual de Java se encarga de lanzar la excepción \texttt{OutOfMemoryError}) cuando esto sucede) y liberar la memoria, posibilitando que nos centremos más en los algoritmos en sí. \\
 
 Por otro lado nos encontramos con que en Java el paso de parámetros es siempre por valor y no por referencia, lo que ha ocasionado problemas que no existían en Pascal a la hora de manejar la estructura del árbol (explicaremos estos problemas más adelante cuando entremos en detalles de la implementación). \\
 
@@ -24,7 +19,17 @@ Por último, cabe destacar que al utilizar clases y no estructuras y punteros, e
 
 % Comentar que se puede hacer árbol genérico, poner los métodos en el árbol, atributos privados...
 
-%%%%%%%%%%%%%%%%%%%%%% Análisis de implementación %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Análisis de implementación}
+
+\hspace{2em}En primer lugar hablaremos de la ``traducción'' de los tipos.
+\begin{itemize}
+	\item \texttt{tPosA}, al ser un puntero, desaparece.
+	\item \texttt{tNodoA} se convierte en la clase \texttt{Node}, con los mismos atributos que tenía como campos en la estructura original. Para que se mantenga lo más parecido a Pascal, sus atributos son públicos y no existe ningún método de getter ni setter.
+	\item \texttt{tABB} se convierte en la clase \texttt{Bst}\footnote{Binary Search Tree}, el cual solo contiene un atributo de tipo \texttt{Node}. De este modo
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 En primer lugar hablaremos de la "traducción" de los tipos. 
 \begin{itemize}
 	\item \texttt{tPosA}, al ser un puntero, desaparece.
@@ -48,7 +53,4 @@ Ahora hablemos de la adaptación de los procedimientos y funciones.
 \end{itemize}
 Además cabe destacar que las versiones iterativas de las funciones necesitan menos argumentos que su versión en Pascal, ya que no necesitan recibir el árbol a tratar.
 
-
-\subsection{Modificaciones en el diseño}
-
-Por aquí poner todo lo que ha cambiado en la implementación.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
