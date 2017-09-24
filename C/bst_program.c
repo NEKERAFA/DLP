@@ -26,10 +26,40 @@ int main() {
 	}
 	
 	emptyTree(&tree);
+	insertKey(&tree, 4);
+	insertKey(&tree, 4);
+	insertKey(&tree, 2);
+	insertKey(&tree, 6);
+	insertKey(&tree, 1);
+	insertKey(&tree, 3);
+	insertKey(&tree, 5);
+	insertKey(&tree, 7);
 	
-	//bracketPreorder(tree); printf("\n");
+	bracketPreorder(tree); printf("\n");
 	
-	free(tree);
+	printf("Search 1... %d\n", root(searchKey(tree, 1)));
+	printf("Search 2... %d\n", root(searchKey(tree, 2)));
+	printf("Search 3... %d\n", root(searchKey(tree, 3)));
+	printf("Search 4... %d\n", root(searchKey(tree, 4)));
+	printf("Search 5... %d\n", root(searchKey(tree, 5)));
+	printf("Search 6... %d\n", root(searchKey(tree, 6)));
+	printf("Search 7... %d\n", root(searchKey(tree, 7)));
+	
+	printf("Delete 5...");
+	deleteKey(&tree, 5);
+	bracketPreorder(tree); printf("\n");
+
+	printf("Delete 6...");
+	deleteKey(&tree, 6);
+	bracketPreorder(tree); printf("\n");
+
+	printf("Delete 4...");
+	deleteKey(&tree, 4);
+	bracketPreorder(tree); printf("\n");
+
+	printf("Delete 2...");
+	deleteKey(&tree, 2);
+	bracketPreorder(tree); printf("\n");
 	
 	return 0;
 }

@@ -25,9 +25,9 @@ typedef tNodeT *tPosT;
 
 typedef tPosT tBST;
 
-void emptyTree(tBST *T);
+/**********************************************************************/
 
-void insertKey(tBST *T, tKey key);
+void emptyTree(tBST *T);
 
 tBST leftChild(tBST T);
 
@@ -37,8 +37,10 @@ tKey root(tBST T);
 
 bool isEmptyTree(tBST T);
 
+void insertKey(tBST *T, tKey key);
+
 tBST searchKey(tBST T, tKey key);
 
-void removeKey(tBST *T, tKey key);
+void deleteKey(tBST *T, tKey key);
 
 #endif // _H_BST_
