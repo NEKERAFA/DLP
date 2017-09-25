@@ -11,6 +11,12 @@
 /** Implementation **/
 /**********************************************************************/
 
+struct tNodeT {
+	tKey key;
+	struct tNodeT *left;
+	struct tNodeT *right;
+};
+
 void error(char *s) {
 	printf("%s\n", s);
 	exit(1);
@@ -135,7 +141,7 @@ void delete_i(tBST *T, tKey key) {
 			numChildren++;
 		if (del->right != NULL)
 			numChildren++;
-			
+		
 		switch (numChildren) {
 			// Delete leaf node
 			case 0:
@@ -154,10 +160,10 @@ void delete_i(tBST *T, tKey key) {
 					noEmptyChild = del->right;
 				else
 					noEmptyChild = del->left;
-					
+	
 				if (parentDel == NULL)
 					*T = noEmptyChild; // Delete root replaced it with only not empty child
-				else if (parentDel == del)
+				else if (parentDel->left == del)
 					parentDel->left = noEmptyChild;
 				else
 					parentDel->right = noEmptyChild;
@@ -168,13 +174,13 @@ void delete_i(tBST *T, tKey key) {
 			case 2:
 				parentDel = del;
 				maxLeftChild = del->left;
-				while (maxLeftChild->right == NULL) { // Search for the node with greatest key in left subtree
+				while (maxLeftChild->right != NULL) { // Search for the node with greatest key in left subtree
 					parentDel = maxLeftChild;
 					maxLeftChild = maxLeftChild->right;
 				}
 				
 				del->key = maxLeftChild->key; // Up found node
-				if (parentDel = del) // If left subtree haven't right child
+				if (parentDel == del) // If left subtree haven't right child
 					parentDel->left = maxLeftChild->left; // maxLeftChild will be deleted, so we hook up its children to parentDel
 				else // If left subtree have right child, it will have to hook up to right child
 					parentDel->right = maxLeftChild->left; // maxLeftChild will be deleted, so we hook up its children to parentDel

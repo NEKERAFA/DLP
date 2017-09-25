@@ -13,12 +13,6 @@
 
 typedef int tKey;
 
-struct tNodeT {
-	tKey key;
-	struct tNodeT *left;
-	struct tNodeT *right;
-};
-
 typedef struct tNodeT tNodeT;
 
 typedef tNodeT *tPosT;
