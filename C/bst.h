@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 #ifndef _H_BST_
-#define _H_BST_
+#define _H_BST_ 1
 
 /** Interface **/
 /**********************************************************************/
