@@ -2,7 +2,11 @@
 \hspace{2em}Para las pruebas en este lenguaje se usó el compilador \texttt{javac} en su versión 1.8.0\_144 sobre Ubuntu Mate 16.04 (amd64).
 
 \subsection{Descripción}
+<<<<<<< HEAD
 \hspace{2em}Java es un lenguaje de programación de propósito general de alto nivel que sigue el paradigma de orientación a objetos basada en clases, aunque a día de hoy las últimas versiones ya incluyen elementos de otros paradigmas, como funciones-lambda. \\
+=======
+\hspace{2em}Java es un lenguaje de programación de alto nivel que sigue el paradigma de orientación a objetos basada en clases, aunque a día de hoy las últimas versiones ya incluyen elementos de otros paradigmas, como funciones lambda. \\
+>>>>>>> 7a7c1759daed68162d9a24aab9c7e67e8f46bea8
 
 La compilación del código fuente se traduce a bytecode java, el cual puede ser usado en cualquier plataforma y que es ejecutado sobre una máquina virtual que sí está diseñada para la plataforma final. \\
 
@@ -11,11 +15,11 @@ Su sintaxis deriva en gran medida de C++, siendo Java un lenguaje de tipado est�
 \subsection{Análisis}
 
 \subsubsection{Análisis de ventajas y desventajas}
-\hspace{2em}Como se ha mencionado anteriormente, Java no permite la gestión manual de la memoria, por lo que los tipos de datos que eran punteros no se han podido "traducir" directamente. La gestión de memoria automática nos permite olvidarnos de las tareas de reservar espacio, gestionar la falta de memoria (ya que la propia máquina virtual de Java se encarga de lanzar la excepción \texttt{OutOfMemoryError} cuando esto sucede) y liberar la memoria, posibilitando que nos centremos más en los algoritmos en sí. \\
+\hspace{2em}Como se ha mencionado anteriormente, Java no permite la gestión manual de la memoria, por lo que los tipos de datos que eran punteros no se han podido "traducir" directamente. La gestión de memoria automática nos permite olvidarnos de las tareas de reservar espacio, gestionar la falta de memoria (ya que la propia máquina virtual de Java se encarga de lanzar la excepción \texttt{OutOfMemoryError} cuando esto sucede) y liberar la memoria, posibilitando que nos centremos más en los algoritmos en sí.\\
 
 Por otro lado nos encontramos con que en Java el paso de parámetros es siempre por valor y no por referencia, lo que ha ocasionado problemas que no existían en Pascal a la hora de manejar la estructura del árbol (explicaremos estos problemas más adelante cuando entremos en detalles de la implementación). \\
 
-Por último, cabe destacar que al utilizar clases y no estructuras y punteros, el código resultante es de más alto nivel y más legible. \\
+Por último, cabe destacar que al utilizar clases y no estructuras y punteros, el código resultante es de más alto nivel y más legible.\\
 
 \subsubsection{Análisis de implementación}
 

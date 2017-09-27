@@ -2,12 +2,41 @@
 \hspace{2em}Para las pruebas en este lenguaje se usó el intérprete top-level \texttt{ocaml} en su versión 4.02.3 sobre Ubuntu Mate 16.04 (amd64).
 
 \subsection{Descripción}
-\hspace{2em}OCaml (Objetive Caml) es un lenguaje de programación de alto nivel que sigue principalmente el paradigma declarativo funcional, pero contiene métodos para la programación imperativa estructurada y orientación a objetos basado en clases. Basado en los Meta-Lenguajes, OCaml es la actual implementación de Caml (Categorical abstract machine language). \\
+\hspace{2em}OCaml (Objetive Caml) es un lenguaje de programación de alto nivel de propósito general que sigue principalmente el paradigma declarativo funcional, pero contiene métodos para la programación imperativa estructurada y orientación a objetos basada en clases. Basado en los Meta-Lenguajes, OCaml es la actual implementación de Caml (Categorical abstract machine language). \\
 
-A pesar de que es un lenguaje de propósito general, el código fuente se puede compilar a bytecode para ser ejecutado sobre un intérprete top-level\footnote{El compilador es \texttt{ocamlc} y el intérprete top-level que ejecuta el código es \texttt{ocamlrun}.} que es el que está diseñado para la plataforma final, o mediante el compilador stand-alone\footnote{El compilador es \texttt{ocamlopt} y se ejecuta en la propia máquina.} que proporciona código máquina para la plataforma actual. \\
+El código fuente se puede compilar a bytecode para ser ejecutado sobre un intérprete top-level\footnote{El compilador es \texttt{ocamlc} y el intérprete top-level que ejecuta el código es \texttt{ocamlrun}.} que es el que está diseñado para la plataforma final, o también se puede utilizar el compilador stand-alone\footnote{El compilador es \texttt{ocamlopt} y se ejecuta en la propia máquina.} que proporciona código máquina para la plataforma final. \\
 
-Aunque es un lenguaje de tipado estático y fuerte, OCaml presenta un motor inferencial de tipos, pudiendo definir variables y tipos de datos polimórficos en tiempo de compilación. El compilador nativo y el intérprete top-level son los responsables de la gestión y asignación de memoria al compilar y en la ejecución de código OCaml.
+Aunque es un lenguaje de tipado estático y fuerte, OCaml presenta un motor inferencial de tipos, pudiendo definir variables y tipos de datos polimórficos en tiempo de compilación. El compilador nativo y el intérprete top-level son los responsables de la gestión y asignación de memoria al compilar y en la ejecución de código OCaml, es decir, no existe gestión manual de la memoria.
 
 \subsection{Análisis}
 
-\subsection{Modificaciones en el diseño}
+\subsubsection{Análisis de ventajas y desventajas}
+\hspace{2em}Al igual que en Java, no disponemos de gestión de memoria manual, con las implicaciones ya mencionadas.\\% TODO revisar a ver si hay algo que añadir además de lo dicho en Java
+
+El modo en el que el árbol está implementado en Pascal no favorece el uso de la programación funcional de una forma tal que las versiones iterativas y recursivas sean intercambiables, por lo que fue necesario apartarse un tanto de este tipo de programación.\\ % TODO a menos que se pueda entregar un TAD distinto para cada versión
+
+Por otro lado, el sistema de matching que ofrece OCaml facilita la implementación de la versión recursiva de las operaciones. % TODO ver si Rafa está de acuerdo, no estoy muy segura de lo que digo :3
+% Otra opción es poner que simplifica la implementación en general ahorrando el if-then-else inicial
+
+\subsubsection{Análisis de implementación}
+\hspace{2em}Nuestro árbol se representa mediante el tipo \texttt{bst}, que puede tomar los valores \texttt{Empty} y \texttt{Node(int, bst ref, bst ref)}. Utilizar \texttt{bst ref} como hijos derecho e izquierdo nos permite manejarlos de una manera similar a los punteros de Pascal. Una \texttt{ref} es una estructura con un campo \texttt{contents}, que es la información que realmente se modifica (una especie de equivalente al contenido del puntero).\\ % TODO comentar cómo tener dos refs al mismo sitio / copiar una variable como en child de insert_i
+
+Con respecto a las funciones, tenemos lo siguiente:
+\begin{itemize}
+	\item \texttt{arbolVacio:} Recibe \texttt{unit}\footnote{El equivalente al vacío en OCaml} y devuelve una ref a Empty.
+	\item \texttt{hijoIzquierdo, hijoDerecho} y \texttt{raiz:} Matchean el contenido del árbol con un Node(key,left,right) y devuelven el componente que corresponda. Al igual que en la implementación en Pascal, fallan si el árbol de entrada está vacío.
+	\item \texttt{esArbolVacio:} Si el contenido del árbol es Empty devuelve true, en cualquier otro caso devuelve false.
+	\item \texttt{insertar\_r:} La traducción es directa teniendo en cuenta el sistema de matching de OCaml y el cambio de contenido de los refs.
+	\item \texttt{insertar\_i:} La traducción también es directa.
+	\item \texttt{buscar\_r:} La traducción es directa, pasando por un primer match propio de OCaml para ahorrar if-then-else. % TODO explicar por qué node = ref Empty si luego se pasa a Node()
+	\item \texttt{buscar\_i:} La adaptación es directa.
+	\item \texttt{sup2:} Recibe el nodo utilizado para recorrer el árbol en busca del nodo con mayor clave, y el nodo padre de este. De este modo, una vez encontrado el nodo con mayor clave, usamos dicha clave para sustituir a la que se va a eliminar, y mediante el nodo padre recolocamos sus hijos izquierdos en el árbol resultado.
+	\item \texttt{eliminar\_r:} Se devuelve un unit si el árbol de entrada está vacío (es decir, si la clave no está en el árbol). En caso contrario, la adaptación desde Pascal se realiza sin cambios relevantes, a excepción de la función auxiliar \texttt{sup2} ya comentada.
+	\item \texttt{delete\_i:} La adaptación es casi directa, salvo por la introducción de una nueva variable auxiliar: parentMaxLeftChild, que representa al nodo padre de maxLeftChild y cumple con las funciones que correspondían a parentRm en Pascal. Por su parte, parentRm se reserva para cambiar la clave del nodo a eliminar desde ahí, ya que rm es una ``copia'' del nodo que realmente queremos modificar. Si parentRm es Empty (es decir, se va a eliminar la raíz del árbol) modificamos directamente a través del árbol pasado por parámetro.
+\end{itemize}
+
+\subsection{Posibles mejoras}
+\hspace{2em}Al igual que en Java, en OCaml podría definirse un árbol binario de búsqueda para un tipo de clave genérico (especificado como 'a en la definición del tipo).\\
+
+Por otro lado, el tener que mantenerse fiel a la implementación en Pascal no nos ha permitido utilizar el paradigma funcional propiamente dicho. De haberlo hecho de esta forma, habríamos tenido una implementación recursiva más intuitiva para el lenguaje y más sencilla al no tener que manejar el equivalente a punteros, si bien la iterativa resultaría imposible de realizar.
+% TODO capacidad de match si se decide quitar de la adaptación
