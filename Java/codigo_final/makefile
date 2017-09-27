@@ -16,12 +16,13 @@ all: $(CLASSES)
 	jar cvfm BstProgram.jar manifest -C build/ .
 	java -jar ./BstProgram.jar
 
-$(CLASSES): $(JAVAFILES)
+build/bst/Bst.class: bst/Bst.java
+	rm -f -v $(CLASES)
 	javac -d build $(JAVAFILES)
 
 clean:
-	rm -vfr build
-	rm -vfr BstProgram.jar
+	rm -f -v -r build
+	rm -f -v BstProgram.jar
 
 create_dir:
 	mkdir build
