@@ -6,18 +6,12 @@
 #include <stdbool.h>
 
 #ifndef _H_BST_
-#define _H_BST_
+#define _H_BST_ 1
 
 /** Interface **/
 /**********************************************************************/
 
 typedef int tKey;
-
-struct tNodeT {
-	tKey key;
-	struct tNodeT *left;
-	struct tNodeT *right;
-};
 
 typedef struct tNodeT tNodeT;
 
