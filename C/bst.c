@@ -60,14 +60,30 @@ bool isEmptyTree(tBST T) {
 
 /**********************************************************************/
 
+void insert_r(tBST *T, tKey key) {
+    if (*T == NULL) {
+        createNodeT(T);
+        (*T)->key = key;
+        (*T)->left = NULL;
+        (*T)->right = NULL;
+    } else if (key < (*T)->key) {
+        insert_r(&(*T)->left, key);
+    } else if (key > (*T)->key) {
+        insert_r(&(*T)->right, key);
+    }
+    // Duplicates are ignored
+}
+
+/**********************************************************************/
+
 void insert_i(tBST *T, tKey key) {
 	tBST new, parent, child;
-	
+
 	createNodeT(&new);
 	new->key = key;
 	new->left = NULL;
 	new->right = NULL;
-	
+
 	if (*T == NULL) // Insert in empty tree
 		*T = new;
 	else {
@@ -92,8 +108,22 @@ void insert_i(tBST *T, tKey key) {
 } // Insert interative
 
 void insertKey(tBST *T, tKey key) {
-	//insert_r(T, key);
-	insert_i(T, key);
+	insert_r(T, key);
+	//insert_i(T, key);
+}
+
+/**********************************************************************/
+// TODO preguntar por que por referencia
+tPosT search_i(tBST *T, tKey key) {
+    tPosT node = *T;
+    while ((node != NULL) && (node->key != key)) {
+        if (key < node->key) {
+            node = node->left;
+        } else {
+            node = node->right;
+        }
+    }
+    return node;
 }
 
 /**********************************************************************/
@@ -110,8 +140,42 @@ tPosT search_r(tBST T, tKey key) {
 }
 
 tBST searchKey(tBST T, tKey key) {
-	return search_r(T, key);
-	//return search_i(T, key);
+	//return search_r(T, key);
+	return search_i(&T, key);
+}
+
+/**********************************************************************/
+
+void delete_r(tBST *T, tKey key) {
+    tBST aux;
+
+    void del_aux(tBST *T) {
+        if ((*T)->right != NULL) {
+            del_aux(&(*T)->right);
+        } else {
+            aux->key = (*T)->key;
+            aux = *T;
+            (*T) = (*T)->left;
+        }
+    }
+
+    if ((*T) != NULL) {
+        if (key < (*T)->key) {
+            delete_r(&(*T)->left, key);
+        } else if (key > (*T)->key) {
+            delete_r(&(*T)->right, key);
+        } else {
+            aux = *T;
+            if ((*T)->left == NULL) {
+                (*T) = (*T)->right;
+            } else if ((*T)->right == NULL) {
+                (*T) = (*T)->left;
+            } else {
+                del_aux(&(*T)->left);
+            }
+            free(aux);
+        }
+    }
 }
 
 /**********************************************************************/
@@ -132,7 +196,7 @@ void delete_i(tBST *T, tKey key) {
 			del = del->left;
 		else del = del->right; // Move forward right child if the key is greater or equal to current node
 	}
-	
+
 	// If key not found in T, do nothing
 	if (del != NULL) {
 		// Count children
@@ -141,7 +205,7 @@ void delete_i(tBST *T, tKey key) {
 			numChildren++;
 		if (del->right != NULL)
 			numChildren++;
-		
+
 		switch (numChildren) {
 			// Delete leaf node
 			case 0:
@@ -153,14 +217,14 @@ void delete_i(tBST *T, tKey key) {
 					parentDel->right = NULL;
 				break;
 			// case 0
-			
+
 			// Delete node with one child
 			case 1:
 				if (del->left == NULL)
 					noEmptyChild = del->right;
 				else
 					noEmptyChild = del->left;
-	
+
 				if (parentDel == NULL)
 					*T = noEmptyChild; // Delete root replaced it with only not empty child
 				else if (parentDel->left == del)
@@ -169,7 +233,7 @@ void delete_i(tBST *T, tKey key) {
 					parentDel->right = noEmptyChild;
 				break;
 			// case 1
-			
+
 			// Delete node with two children
 			case 2:
 				parentDel = del;
@@ -178,24 +242,23 @@ void delete_i(tBST *T, tKey key) {
 					parentDel = maxLeftChild;
 					maxLeftChild = maxLeftChild->right;
 				}
-				
+
 				del->key = maxLeftChild->key; // Up found node
 				if (parentDel == del) // If left subtree haven't right child
 					parentDel->left = maxLeftChild->left; // maxLeftChild will be deleted, so we hook up its children to parentDel
 				else // If left subtree have right child, it will have to hook up to right child
 					parentDel->right = maxLeftChild->left; // maxLeftChild will be deleted, so we hook up its children to parentDel
-				
+
 				del = maxLeftChild; // Delete maxLeftChild
 				break;
 			// case 2
 		} // switch
-		
+
 		free(del);
 	} // if
 } // delete_i
 
 void deleteKey(tBST *T, tKey key) {
-	//delete_r(T, key);
-	delete_i(T, key);
+	delete_r(T, key);
+	//delete_i(T, key);
 }
-
