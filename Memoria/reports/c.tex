@@ -11,4 +11,14 @@ Su sintaxis viene especificada en el estándar C, definiéndolo como lenguaje de
 La enorme popularidad del lenguaje le ha permitido ser el que más implementaciones tiene. A día de hoy sirve de lenguaje intermedio para otros lenguajes de alto nivel como C++, C\#, Objetive-C, Go, Perl, PHP, Python, Lua y Swift. También contiene muchísimas bibliotecas externas para emular comportamientos de otros lenguajes, como la gestión de memoria automática, orientación a objetos mediante GObject e incluso poder usar funciones lamda.
 \subsection{Análisis}
 
-\subsection{Modificaciones en el diseño}
+\hspace{2em}C y Pascal comparten el mismo paradigma y la misma forma de trabajo, por lo que la adaptación a C ha resultado en un código casi idéntico al proporcionado en la implementación en Pascal. Solo nos queda comentar un pequeños detalles que ha marcado la diferencia entre los dos lenguajes. \\
+
+El primero es que C no presenta un método estructurado en el propio lenguaje para definir un módulo. La solución más parecida es incluir en un archivo \texttt{.h} aparte las definiciones de tipos de variables y funciones que puede usar el programa principal, y en un archivo \texttt{.c} la implementación tanto de las funciones visibles al programa principal como de las funciones internas del módulo (como las formas recursivas e iterativas de inserción, borrado y búsqueda, y la función para crear un nuevo nodo e imprimir un error cuando no hay espacio). \\
+
+Esto no evita que el programador pueda hacer implementaciones en el archivo de cabecera, cosa que Pascal restringe más mediante la definición de módulos. \\
+
+Otro problema que nos encontramos es que C no contiene una forma de indicar si los argumentos de las funciones son pasados por parámetros o por referencia. La forma de solucionar es pasar los parámetros como punteros, lo cual resulta un engorro de cara a la programación. \\
+
+Por último, con respecto a seguir la implementación de Pascal, hemos tenido que usar la biblioteca \texttt{stdbol} debido a que C no contiene el tipo primitivo \texttt{boolean}. \\
+
+Con esto podemos concluir que Pascal es más estructurado y de mayor nivel de abstracción que C, por lo que realmente no hay mejoras que C pueda hacer con respecto a Pascal en este caso.
