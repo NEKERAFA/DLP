@@ -9,6 +9,7 @@ public final class BstUtils {
 
 	private BstUtils() {}
 
+	// TODO Precondición: el árbol debe de estar inicializado (Vease definición de isEmptyTree y searchR)
 	public static Bst emptyTree() {
 		return new Bst();
 	}
@@ -47,7 +48,7 @@ public final class BstUtils {
 				tree.root = new Node();
 				tree.root.key = key;
 			// Insert regular node
-			} else if (tree.root.left == node) {
+			} else if (key < tree.root.key) {
 				tree.root.left = new Node();
 				tree.root.left.key = key;
 			} else {
