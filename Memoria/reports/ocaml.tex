@@ -35,7 +35,7 @@ Con respecto a las funciones, tenemos lo siguiente:
 	\item \texttt{delete\_i:} La adaptación es casi directa, salvo por la introducción de una nueva variable auxiliar: parentMaxLeftChild, que representa al nodo padre de maxLeftChild y cumple con las funciones que correspondían a parentRm en Pascal. Por su parte, parentRm se reserva para cambiar la clave del nodo a eliminar desde ahí, ya que rm es una ``copia'' del nodo que realmente queremos modificar. Si parentRm es Empty (es decir, se va a eliminar la raíz del árbol) modificamos directamente a través del árbol pasado por parámetro.
 \end{itemize}
 
-\subsection{Posibles mejoras}
+\subsubsection{Posibles mejoras}
 \hspace{2em}Al igual que en Java, en OCaml podría definirse un árbol binario de búsqueda para un tipo de clave genérico (especificado como 'a en la definición del tipo).\\
 
 Por otro lado, el tener que mantenerse fiel a la implementación en Pascal no nos ha permitido utilizar el paradigma funcional propiamente dicho. De haberlo hecho de esta forma, habríamos tenido una implementación recursiva más intuitiva para el lenguaje y más sencilla al no tener que manejar el equivalente a punteros, si bien la iterativa resultaría imposible de realizar.
