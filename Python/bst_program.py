@@ -34,18 +34,18 @@ print("Search 5... " + str(bst.root(bst.searchKey(tree, 5))))
 print("Search 6... " + str(bst.root(bst.searchKey(tree, 6))))
 print("Search 7... " + str(bst.root(bst.searchKey(tree, 7))))
 
-print('Delete 5...')
+print('Delete 5...', end = " ")
 bst.deleteKey(tree, 5)
 bracketPreorder(tree); print()
 
-print('Delete 6...')
+print('Delete 6...', end = " ")
 bst.deleteKey(tree, 6)
 bracketPreorder(tree); print()
 
-print('Delete 4...')
+print('Delete 4...', end = " ")
 bst.deleteKey(tree, 4)
 bracketPreorder(tree); print()
 
-print('Delete 2...')
+print('Delete 2...', end = " ")
 bst.deleteKey(tree, 2)
 bracketPreorder(tree); print()

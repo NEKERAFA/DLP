@@ -5,65 +5,67 @@
 
 ################################################################################
 
+def createNodeT():
+	return {'key': None, 'left': {}, 'right': {}}
+
+################################################################################
+
 def isEmptyTree(T):
-	return T['node'] is None
+	return T == {}
 
 ################################################################################
 
 def leftChild(T):
-	return { 'node': T['node']['left'] }
+	return T['left']
 
 ################################################################################
 
 def rightChild(T):
-	return { 'node': T['node']['right'] }
+	return T['right']
 
 ################################################################################
 
 def root(T):
-	return T['node']['key']
+	return T['key']
 
 ################################################################################
 
 def emptyTree():
-	return { 'node': None }
+	return {}
 
 ################################################################################
 
-def insert_r(node, T, key):
+def insert_r(node, key):
 	# Insert in empty tree
-	if node is None:
-		# Insert root of the complete tree
-		if T['node'] is None:
-			T['node'] = { 'key': key, 'left': None, 'right': None }
-		# Insert regular node
-		elif key < T['node']['key']:
-			T['node']['left'] = { 'key': key, 'left': None, 'right': None }
-		else:
-			T['node']['right'] = { 'key': key, 'left': None, 'right': None }
+	if node == {}:
+		node['key'] = key
+		node['left'] = {}
+		node['right'] = {}
 	# Insert in left child
 	elif key < node['key']:
-		aux = {'node': node}
-		insert_r(node['left'], aux, key)
+		insert_r(node['left'], key)
 	# Insert in right child
 	elif key > node['key']:
-		aux = {'node': node}
-		insert_r(node['right'], aux, key)
+		insert_r(node['right'], key)
+	# Duplicates are ignored
 # Insert recursive
 
 def insert_i(T, key):
 	# Create new node
-	newNode = { 'key': key, 'left': None, 'right': None }
+	newNode = createNodeT()
+	newNode['key'] = key
 
 	# If tree is empty, insert in
-	if T['node'] is None:
-		T['node'] = newNode
+	if T == {}:
+		T['key'] = newNode['key']
+		T['right'] = newNode['right']
+		T['left'] = newNode['left']
 	else:
-		parent = None
-		child = T['node']
+		parent = {}
+		child = T
 
 		# Search for the key's right place in the tree
-		while (child is not None) and (child['key'] != key):
+		while (child != {}) and (child['key'] != key):
 			parent = child
 			if key < child['key']:
 				child = child['left']
@@ -71,111 +73,188 @@ def insert_i(T, key):
 				child = child['right']
 
 		# Insert new key in its place
-		if child is None:
+		if child == {}:
 			if key < parent['key']:
-				parent['left'] = new
+				parent['left'] = newNode
 			else:
-				parent['right'] = new
+				parent['right'] = newNode
 		# Duplicate are ignored
 # Insert iterative
 
 ################################################################################
 
 def insertKey(T, key):
-	#insert_i(T, key)
-	insert_r(T['node'], T, key)
+	insert_i(T, key)
+	#insert_r(T, key)
 
 ################################################################################
 
 def search_r(node, key):
-	result = {}
-
-	if node is None:
-		result['node'] = None
+	if node == {}:
+		return None
 	elif (key == node['key']):
-		result['node'] = node
+		return node
 	elif (key < node['key']):
-		result = search_r(node['left'], key)
+		return search_r(node['left'], key)
 	else:
-		result = search_r(node['right'], key)
-
-	return result
+		return search_r(node['right'], key)
 
 ################################################################################
 
 def search_i(T, key):
-	node = T['node']
+	node = T
 
 	# Search for key node
-	while node is not None and node['key'] != key:
+	while node != {} and node['key'] != key:
 		if key < node['key']:
 			node = node['left']
 		else:
 			node = node['right']
 
-	return { 'node': node }
+	return node
 
 ################################################################################
 
 def searchKey(T, key):
-	#return search_r(T['node'], key)
-	return search_i(T, key)
+	return search_r(T, key)
+	#return search_i(T, key)
 
 ################################################################################
 
-def delete_r(node, T, key):
-	'''
-		T: parent of the node to be deleted. Used to reorder the children of
-		the node to be deleted.
-	'''
-	def del_aux(rm, parentNode, node):
+def delete_r(T, key):
+	aux = {}
+
+	def del_aux(node):
 		'''
-			rm: node with the key to delete
-			parentNode: parent of the node that will replace del
-			This method replaces the node to remove with the node with the
-			greatest key from its left subtree.
-
-			We need the parent node instead of the node itself in order to take
-			the children of the node that will replace del and put them as
-			children of parentNode
+			When node to remove has two children, delete_r calls this function
+			to replace it with greatest key node from left subtree.
 		'''
-		if node['right'] is not None:
-			del_aux(rm, node, node['right'])
+		if node['right'] != {}:
+			del_aux(node['right'])
 		else:
-			rm['key'] = node['key']
-			parentNode['right'] = node['left']
-
-	if node is not None:
-		# Create auxiliar tree
-		aux = { 'node': node }
-
-		if key < node['key']:
-			delete_r(node['left'], aux, key)
-		elif key > node['key']:
-			delete_r(node['right'], aux, key)
-		else:
-			# Delete node with at most one child
-			if node['left'] is None:
-				# Delete root of the total tree
-				if T['node'] is node:
-					T['root'] = node['right']
-				# Check if node was a right or a left child
-				elif T['node']['left'] is node:
-					T['node']['left'] = node['right']
-				else:
-				 	T['node']['right'] = node['right']
-			elif node['right'] is None:
-				# Delete root of the total tree
-				if T['node'] is node:
-					T['root'] = node['left']
-				# Check if node was a right or a left child
-				elif T['node']['left'] is node:
-					T['node']['left'] = node['left']
-				else:
-				 	T['node']['right'] = node['left']
+			aux['key'] = node['key']
+			# If left subtree is empty, remove all keys in subtree
+			if node['left'] == {}:
+				del node['key']
+				del node['left']
+				del node['right']
+			# If left subtree isn't node, replace all keys by left subtree keys
 			else:
-				del_aux(node, node, node['left'])
+				node['key'] = node['right']['key']
+				node['key'] = node['right']['key']
+				node['key'] = node['right']['key']
+	# del_aux
+
+	if T != {}:
+		if key < T['key']:
+			delete_r(T['left'], key)
+		elif key > T['key']:
+			delete_r(T['right'], key)
+		else:
+			aux = T
+			# Delete node with at most one child
+			if T['left'] == {}:
+				# If right child is empty, delete all parent's keys
+				if T['right'] == {}:
+					del T['key']
+					del T['left']
+					del T['right']
+				# If right child isn't empty, replace all parent's keys
+				else:
+					T['key'] = T['right']['key']
+					T['left'] = T['right']['left']
+					T['right'] = T['right']['right']
+			elif T['right'] == {}:
+				# If right child is empty, delete all parent's keys
+				if T['left'] == {}:
+					del T['key']
+					del T['left']
+					del T['right']
+				# If right child isn't empty, replace all parent's keys
+				else:
+					T['key'] = T['left']['key']
+					T['right'] = T['left']['right']
+					T['left'] = T['left']['left']
+			else:
+				del_aux(T['left'])
 # recursive delete
 
+################################################################################
+
+def delete_i(T, key):
+	parentRm = None
+	rm = T
+
+	# Search for the node to remove
+	while rm != {} and rm['key'] != key:
+		parentRm = rm
+
+		if key < rm['key']:
+			rm = rm['left']
+		else:
+			rm = rm['right']
+
+	# If the key isn't in the tree, don't do anything
+	if rm != {}:
+		numChildren = 0
+		if rm['left'] != {}:
+			numChildren = numChildren+1
+		if rm['right'] != {}:
+			numChildren = numChildren+1
+
+		# Remove leaf node
+		if numChildren == 0:
+			if parentRm is None:
+			# Parent is the only node in tree
+			# Remove all key in tree
+				del T['key']
+				del T['left']
+				del T['right']
+			elif parentRm['left'] == rm:
+				parentRm['left'] = {}
+			else:
+				parentRm['right'] = {}
+
+		# Remove node with one child
+		elif numChildren == 1:
+			noEmptyChild = None
+			# Get no empty child
+			if rm['left'] == {}:
+				noEmptyChild = rm['right']
+			else:
+				noEmptyChild = rm['left']
+
+			if parentRm is None:
+				# Parent is the only node in tree
+				# Replace all key in tree
+					T['key'] = noEmptyChild['key']
+					T['left'] = noEmptyChild['left']
+					T['right']  = noEmptyChild['right']
+			# Replace child
+			elif parentRm['left'] == rm:
+				parentRm['left']  = noEmptyChild
+			else:
+				parentRm['right']  = noEmptyChild
+
+		# Remove node with two children
+		elif numChildren == 2:
+			parentRm = rm
+			maxLeftChild = rm['left']
+
+			# Get greatest key node from left subtree
+			while maxLeftChild['right'] != {}:
+				parentRm = maxLeftChild
+				maxLeftChild = maxLeftChild['left']
+
+			rm['key'] = maxLeftChild['key']
+			if parentRm == rm:
+				parentRm['left'] = maxLeftChild['left']
+			else:
+				parentRm['right'] = maxLeftChild['left']
+# Iterative delete
+
+################################################################################
+
 def deleteKey(T, key):
-	delete_r(T['node'], T, key)
+	#delete_r(T, key)
+	delete_i(T, key)
