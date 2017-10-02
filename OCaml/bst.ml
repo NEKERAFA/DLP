@@ -58,9 +58,7 @@ let rec search_r a k =
 	match !a with
 		Empty -> ref Empty
 		| Node(key,left,right) -> if (k = key)
-								  then let node = ref Empty in
-								  		node := Node(key,left,right); (*TODO intentar ver por qué peta*)
-										node
+								  then ref (Node(key,left,right))
 								  else if (k < key)
 								  	then search_r left k
 								  	else search_r right k;;
