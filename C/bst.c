@@ -25,7 +25,7 @@ void error(char *s) {
 void createNodeT(tPosT *p) {
 	*p = malloc(sizeof(tNodeT));
 	if (p == NULL)
-		error(" *** abb.createNoteT: Out of memory");
+		error(" *** bst.createNoteT: Out of memory");
 }
 
 /**********************************************************************/
@@ -60,23 +60,23 @@ bool isEmptyTree(tBST T) {
 
 /**********************************************************************/
 
-void insert_r(tBST *T, tKey key) {
+void insertR(tBST *T, tKey key) {
     if (*T == NULL) {
         createNodeT(T);
         (*T)->key = key;
         (*T)->left = NULL;
         (*T)->right = NULL;
     } else if (key < (*T)->key) {
-        insert_r(&(*T)->left, key);
+        insertR(&(*T)->left, key);
     } else if (key > (*T)->key) {
-        insert_r(&(*T)->right, key);
+        insertR(&(*T)->right, key);
     }
     // Duplicates are ignored
 }
 
 /**********************************************************************/
 
-void insert_i(tBST *T, tKey key) {
+void insertI(tBST *T, tKey key) {
 	tBST new, parent, child;
 
 	createNodeT(&new);
@@ -89,7 +89,7 @@ void insert_i(tBST *T, tKey key) {
 	else {
 		parent = NULL;
 		child = *T;
-		// Descend tree searching a empty node to insert
+		// Search for the key's right place in the tree
 		while ((child != NULL) && (child->key != key)) {
 			parent = child;
 			if (key < child->key)
@@ -97,24 +97,24 @@ void insert_i(tBST *T, tKey key) {
 			else
 				child = child->right;
 		}
-		// If the key not found in the tree, insert into parent child
+		// Insert new key in its place
 		if (child == NULL)
 			if (key < parent->key)
 				parent->left = new;
 			else
 				parent->right = new;
-		// Duplicate are ignored
-	} // if
-} // Insert interative
+		// Duplicates are ignored
+	}
+}
 
 void insertKey(tBST *T, tKey key) {
-	insert_r(T, key);
-	//insert_i(T, key);
+	insertR(T, key);
+	//insertI(T, key);
 }
 
 /**********************************************************************/
 // TODO preguntar por que por referencia
-tPosT search_i(tBST *T, tKey key) {
+tPosT searchI(tBST *T, tKey key) {
     tPosT node = *T;
     while ((node != NULL) && (node->key != key)) {
         if (key < node->key) {
@@ -128,30 +128,30 @@ tPosT search_i(tBST *T, tKey key) {
 
 /**********************************************************************/
 
-tPosT search_r(tBST T, tKey key) {
+tPosT searchR(tBST T, tKey key) {
 	if (T == NULL)
 		return NULL;
 	else if (T->key == key)
 		return T;
 	else if (key < T->key)
-		return search_r(T->left, key);
+		return searchR(T->left, key);
 	else
-		return search_r(T->right, key);
+		return searchR(T->right, key);
 }
 
 tBST searchKey(tBST T, tKey key) {
-	//return search_r(T, key);
-	return search_i(&T, key);
+	//return searchR(T, key);
+	return searchI(&T, key);
 }
 
 /**********************************************************************/
 
-void delete_r(tBST *T, tKey key) {
+void deleteR(tBST *T, tKey key) {
     tBST aux;
 
-    void del_aux(tBST *T) {
+    void delAux(tBST *T) {
         if ((*T)->right != NULL) {
-            del_aux(&(*T)->right);
+            delAux(&(*T)->right);
         } else {
             aux->key = (*T)->key;
             aux = *T;
@@ -161,9 +161,9 @@ void delete_r(tBST *T, tKey key) {
 
     if ((*T) != NULL) {
         if (key < (*T)->key) {
-            delete_r(&(*T)->left, key);
+            deleteR(&(*T)->left, key);
         } else if (key > (*T)->key) {
-            delete_r(&(*T)->right, key);
+            deleteR(&(*T)->right, key);
         } else {
             aux = *T;
             if ((*T)->left == NULL) {
@@ -171,7 +171,7 @@ void delete_r(tBST *T, tKey key) {
             } else if ((*T)->right == NULL) {
                 (*T) = (*T)->left;
             } else {
-                del_aux(&(*T)->left);
+                delAux(&(*T)->left);
             }
             free(aux);
         }
@@ -180,11 +180,11 @@ void delete_r(tBST *T, tKey key) {
 
 /**********************************************************************/
 
-void delete_i(tBST *T, tKey key) {
+void deleteI(tBST *T, tKey key) {
 	int numChildren;
 	tBST del; 			// Node to delete
 	tBST parentDel;		// Parent of the node to delete
-	tBST noEmptyChild;	// If the node to delete has only one child, the one that isn't empty
+	tBST nonEmptyChild;	// If the node to delete has only one child, the one that isn't empty
 	tBST maxLeftChild;	// If the node to delete has two children, the node with the greatest key in left subtree
 
 	// Search for the node to delete
@@ -221,16 +221,16 @@ void delete_i(tBST *T, tKey key) {
 			// Delete node with one child
 			case 1:
 				if (del->left == NULL)
-					noEmptyChild = del->right;
+					nonEmptyChild = del->right;
 				else
-					noEmptyChild = del->left;
+					nonEmptyChild = del->left;
 
 				if (parentDel == NULL)
-					*T = noEmptyChild; // Delete root replaced it with only not empty child
+					*T = nonEmptyChild; // Delete root replaced it with only not empty child
 				else if (parentDel->left == del)
-					parentDel->left = noEmptyChild;
+					parentDel->left = nonEmptyChild;
 				else
-					parentDel->right = noEmptyChild;
+					parentDel->right = nonEmptyChild;
 				break;
 			// case 1
 
@@ -255,10 +255,10 @@ void delete_i(tBST *T, tKey key) {
 		} // switch
 
 		free(del);
-	} // if
-} // delete_i
+	}
+}
 
 void deleteKey(tBST *T, tKey key) {
-	delete_r(T, key);
-	//delete_i(T, key);
+	deleteR(T, key);
+	//deleteI(T, key);
 }
