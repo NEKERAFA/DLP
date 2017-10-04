@@ -1,2 +1,9 @@
 # Rafael Alcalde Azpiazu: rafael.alcalde.azpiazu (rafael.alcalde.azpiazu@udc.es)
 # Eva Suárez García: eva.suarez.garcia (eva.suarez.garcia@udc.es)
+
+Antes de nada se debe instalar Python 3:
+ · Ubuntu / Debian:
+ $ sudo apt-get install python3
+
+Para ejecuta, solo basta con introducir en terminal:
+$ ./bst_program.py
