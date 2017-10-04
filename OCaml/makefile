@@ -1,3 +1,6 @@
+# Rafael Alcalde Azpiazu: rafael.alcalde.azpiazu (rafael.alcalde.azpiazu@udc.es)
+# Eva Suárez García: eva.suarez.garcia (eva.suarez.garcia@udc.es)
+
 all: bst_program.out
 	./bst_program.out
 
@@ -18,7 +21,7 @@ bst_program.out: bst.cmx bst_program.cmx
 	ocamlopt -o bst_program.out bst.cmx bst_program.cmx
 
 clean:
-	rm -f -v *cmi
-	rm -f -v *cmx
-	rm -f -v *o
-	rm -f -v *out
+	rm -f -v *.cmi
+	rm -f -v *.cmx
+	rm -f -v *.o
+	rm -f -v *.out
