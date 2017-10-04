@@ -207,7 +207,7 @@ public class BstUtils {
 		int numChildren;
 		Node rm;			// Node to remove
 		Node parentRm;		// Parent of the node to remove
-		Node notEmptyChild;	// If the node to remove has only one child, the one that isn't empty
+		Node nonEmptyChild;	// If the node to remove has only one child, the one that isn't empty
 		Node maxLeftChild;	// If the node to remove has two children, the node with the greatest key of the left subtree
 
 		parentRm = null;
@@ -247,17 +247,17 @@ public class BstUtils {
 				// Remove node with one child
 				case 1:
 					if (rm.left == null) {
-						notEmptyChild = rm.right;
+						nonEmptyChild = rm.right;
 					} else {
-						notEmptyChild = rm.left;
+						nonEmptyChild = rm.left;
 					}
 
 					if (parentRm == null) {
-						tree.root = notEmptyChild;
+						tree.root = nonEmptyChild;
 					} else if (parentRm.left == rm) {
-						parentRm.left = notEmptyChild;
+						parentRm.left = nonEmptyChild;
 					} else {
-						parentRm.right = notEmptyChild;
+						parentRm.right = nonEmptyChild;
 					}
 					break;
 
