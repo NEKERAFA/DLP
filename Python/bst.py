@@ -4,8 +4,7 @@
 '''
 
 ################################################################################
-
-def createNodeT():
+def createNodeT(): # TODO comentar que no asigna memoria o algo
 	return {'key': None, 'left': {}, 'right': {}}
 
 ################################################################################
@@ -35,34 +34,32 @@ def emptyTree():
 
 ################################################################################
 
-def insert_r(node, key):
+def insertR(node, key):
 	# Insert in empty tree
-	if node == {}:
+	if node == {}: # TODO la adaptacion no es directa
 		node['key'] = key
-		node['left'] = {}
+		node['left'] = {} # TODO no funciona hacer node = createNodeT()
 		node['right'] = {}
 	# Insert in left child
 	elif key < node['key']:
-		insert_r(node['left'], key)
+		insertR(node['left'], key)
 	# Insert in right child
 	elif key > node['key']:
-		insert_r(node['right'], key)
+		insertR(node['right'], key)
 	# Duplicates are ignored
-# Insert recursive
 
-def insert_i(tree, key):
-	# Create new node
+def insertI(tree, key):
 	newNode = createNodeT()
 	newNode['key'] = key
 
-	# If tree is empty, insert in
+	# TODO la asignacion tiene que hacerse campo a campo
 	if tree == {}:
 		tree['key'] = newNode['key']
 		tree['right'] = newNode['right']
 		tree['left'] = newNode['left']
 	else:
 		parent = {}
-		child = tree
+		child = tree # TODO no entiendo por que a veces la asignacion se puede hacer directa y otras no
 
 		# Search for the key's right place in the tree
 		while (child != {}) and (child['key'] != key):
@@ -78,33 +75,32 @@ def insert_i(tree, key):
 				parent['left'] = newNode
 			else:
 				parent['right'] = newNode
-		# Duplicate are ignored
+		# Duplicates are ignored
 # Insert iterative
 
 ################################################################################
 
 def insertKey(tree, key):
-	insert_i(tree, key)
-	#insert_r(tree, key)
+	insertI(tree, key)
+	#insertR(tree, key)
 
 ################################################################################
 
-def search_r(node, key):
+def searchR(node, key):
 	if node == {}:
 		return None
 	elif (key == node['key']):
 		return node
 	elif (key < node['key']):
-		return search_r(node['left'], key)
+		return searchR(node['left'], key)
 	else:
-		return search_r(node['right'], key)
+		return searchR(node['right'], key)
 
 ################################################################################
 
 def search_i(tree, key):
 	node = tree
 
-	# Search for key node
 	while node != {} and node['key'] != key:
 		if key < node['key']:
 			node = node['left']
@@ -116,45 +112,46 @@ def search_i(tree, key):
 ################################################################################
 
 def searchKey(tree, key):
-	return search_r(tree, key)
+	return searchR(tree, key)
 	#return search_i(tree, key)
 
 ################################################################################
 
-def delete_r(tree, key):
+def deleteR(tree, key):
 	aux = {}
 
-	def del_aux(node):
-		'''
-			When node to remove has two children, delete_r calls this function
-			to replace it with greatest key node from left subtree.
-		'''
+    # When the node to remove has two children, deleteR calls this function
+    # to replace it with the node with the greatest key from its left subtree.
+	def delAux(node):
 		if node['right'] != {}:
-			del_aux(node['right'])
+			delAux(node['right'])
 		else:
 			aux['key'] = node['key']
 			# If left subtree is empty, remove all keys in subtree
+            # TODO no entiendo para que esta comprobacion
 			if node['left'] == {}:
 				del node['key']
 				del node['left']
 				del node['right']
 			# If left subtree isn't node, replace all keys by left subtree keys
-			else:
+			else: # TODO wtf Rafa si llegamos aqui es porque node['right'] == {}
+                  # que pinta esta asignacion aqui entonces?
 				node['key'] = node['right']['key']
 				node['key'] = node['right']['key']
 				node['key'] = node['right']['key']
-	# del_aux
+	# delAux
 
 	if tree != {}:
 		if key < tree['key']:
-			delete_r(tree['left'], key)
+			deleteR(tree['left'], key)
 		elif key > tree['key']:
-			delete_r(tree['right'], key)
+			deleteR(tree['right'], key)
 		else:
 			aux = tree
 			# Delete node with at most one child
 			if tree['left'] == {}:
 				# If right child is empty, delete all parent's keys
+                # TODO por que esta asignacion si puedes hacer tree = tree['right']?
 				if tree['right'] == {}:
 					del tree['key']
 					del tree['left']
@@ -166,6 +163,7 @@ def delete_r(tree, key):
 					tree['right'] = tree['right']['right']
 			elif tree['right'] == {}:
 				# If right child is empty, delete all parent's keys
+                # TODO mismo de arriba
 				if tree['left'] == {}:
 					del tree['key']
 					del tree['left']
@@ -176,12 +174,12 @@ def delete_r(tree, key):
 					tree['right'] = tree['left']['right']
 					tree['left'] = tree['left']['left']
 			else:
-				del_aux(tree['left'])
+				delAux(tree['left'])
 # recursive delete
 
 ################################################################################
 
-def delete_i(tree, key):
+def deleteI(tree, key):
 	parentRm = None
 	rm = tree
 
@@ -196,7 +194,7 @@ def delete_i(tree, key):
 
 	# If the key isn't in the tree, don't do anything
 	if rm != {}:
-		numChildren = 0
+		numChildren = 0 # TODO por que no declararlo arriba como en Pascal?
 		if rm['left'] != {}:
 			numChildren = numChildren+1
 		if rm['right'] != {}:
@@ -205,8 +203,8 @@ def delete_i(tree, key):
 		# Remove leaf node
 		if numChildren == 0:
 			if parentRm is None:
-			# Parent is the only node in tree
 			# Remove all key in tree
+            # TODO por que no tree = {}?
 				del tree['key']
 				del tree['left']
 				del tree['right']
@@ -217,34 +215,32 @@ def delete_i(tree, key):
 
 		# Remove node with one child
 		elif numChildren == 1:
-			noEmptyChild = None
-			# Get no empty child
+			nonEmptyChild = None # TODO por que no lo defines arriba como en Pascal
+
 			if rm['left'] == {}:
-				noEmptyChild = rm['right']
+				nonEmptyChild = rm['right']
 			else:
-				noEmptyChild = rm['left']
+				nonEmptyChild = rm['left']
 
 			if parentRm is None:
-				# Parent is the only node in tree
-				# Replace all key in tree
-					tree['key'] = noEmptyChild['key']
-					tree['left'] = noEmptyChild['left']
-					tree['right']  = noEmptyChild['right']
-			# Replace child
+				# TODO por que no tree = nonEmptyChild?
+					tree['key'] = nonEmptyChild['key'] # TODO no esta mal indentado?
+					tree['left'] = nonEmptyChild['left']
+					tree['right']  = nonEmptyChild['right']
 			elif parentRm['left'] == rm:
-				parentRm['left']  = noEmptyChild
+				parentRm['left']  = nonEmptyChild
 			else:
-				parentRm['right']  = noEmptyChild
+				parentRm['right']  = nonEmptyChild
 
 		# Remove node with two children
 		elif numChildren == 2:
 			parentRm = rm
-			maxLeftChild = rm['left']
+			maxLeftChild = rm['left'] # TODO mismo que nonEmptyChild en declaracion
 
-			# Get greatest key node from left subtree
+			# Search for the node with the greatest key of the left subtree
 			while maxLeftChild['right'] != {}:
 				parentRm = maxLeftChild
-				maxLeftChild = maxLeftChild['left']
+				maxLeftChild = maxLeftChild['left'] # TODO esto esta mal, es el derecho .-.
 
 			rm['key'] = maxLeftChild['key']
 			if parentRm == rm:
@@ -256,5 +252,5 @@ def delete_i(tree, key):
 ################################################################################
 
 def deleteKey(tree, key):
-	#delete_r(tree, key)
-	delete_i(tree, key)
+	#deleteR(tree, key)
+	deleteI(tree, key)

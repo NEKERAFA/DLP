@@ -149,6 +149,11 @@ tBST searchKey(tBST T, tKey key) {
 void deleteR(tBST *T, tKey key) {
     tBST aux;
 
+    /*
+     * Replaces the node to delete with the node with the
+     * greatest key from its left subtree. It is called only
+     * when the node has two children.
+     */
     void delAux(tBST *T) {
         if ((*T)->right != NULL) {
             delAux(&(*T)->right);
@@ -185,21 +190,20 @@ void deleteI(tBST *T, tKey key) {
 	tBST del; 			// Node to delete
 	tBST parentDel;		// Parent of the node to delete
 	tBST nonEmptyChild;	// If the node to delete has only one child, the one that isn't empty
-	tBST maxLeftChild;	// If the node to delete has two children, the node with the greatest key in left subtree
+	tBST maxLeftChild;	// If the node to delete has two children, the node with the greatest key of the left subtree
 
 	// Search for the node to delete
 	parentDel = NULL;
 	del = *T;
 	while ((del != NULL) && (del->key != key)) {
 		parentDel = del;
-		if (key < del->key) // Move forward left child if the key is smaller than current node
+		if (key < del->key)
 			del = del->left;
-		else del = del->right; // Move forward right child if the key is greater or equal to current node
+		else del = del->right;
 	}
 
-	// If key not found in T, do nothing
+	// If the key is not in T, do nothing
 	if (del != NULL) {
-		// Count children
 		numChildren = 0;
 		if (del->left != NULL)
 			numChildren++;
@@ -210,7 +214,7 @@ void deleteI(tBST *T, tKey key) {
 			// Delete leaf node
 			case 0:
 				if (parentDel == NULL)
-					*T = NULL; // Root was the only node in the tree
+					*T = NULL; // If the root was the only node in the tree
 				else if (parentDel->left == del)
 					parentDel->left = NULL;
 				else
@@ -226,7 +230,7 @@ void deleteI(tBST *T, tKey key) {
 					nonEmptyChild = del->left;
 
 				if (parentDel == NULL)
-					*T = nonEmptyChild; // Delete root replaced it with only not empty child
+					*T = nonEmptyChild;
 				else if (parentDel->left == del)
 					parentDel->left = nonEmptyChild;
 				else
@@ -238,21 +242,22 @@ void deleteI(tBST *T, tKey key) {
 			case 2:
 				parentDel = del;
 				maxLeftChild = del->left;
-				while (maxLeftChild->right != NULL) { // Search for the node with greatest key in left subtree
+                // Search for the node with greatest key of the left subtree
+				while (maxLeftChild->right != NULL) {
 					parentDel = maxLeftChild;
 					maxLeftChild = maxLeftChild->right;
 				}
 
-				del->key = maxLeftChild->key; // Up found node
-				if (parentDel == del) // If left subtree haven't right child
-					parentDel->left = maxLeftChild->left; // maxLeftChild will be deleted, so we hook up its children to parentDel
-				else // If left subtree have right child, it will have to hook up to right child
-					parentDel->right = maxLeftChild->left; // maxLeftChild will be deleted, so we hook up its children to parentDel
+				del->key = maxLeftChild->key;
+				if (parentDel == del)
+					parentDel->left = maxLeftChild->left;
+				else
+					parentDel->right = maxLeftChild->left;
 
-				del = maxLeftChild; // Delete maxLeftChild
+				del = maxLeftChild;
 				break;
 			// case 2
-		} // switch
+		} 
 
 		free(del);
 	}

@@ -43,7 +43,7 @@ begin
    writeln('buscar 6...', Raiz(buscarClave(arbol,6)));
    writeln('buscar 7...', Raiz(buscarClave(arbol,7)));
 
-   write('eliminar 5...');
+   {write('eliminar 5...');
    eliminarClave(arbol, 5);
    preordenParentizado(arbol); writeln;
 
@@ -57,6 +57,37 @@ begin
 
    write('eliminar 2...');
    eliminarClave(arbol,2);
+   preordenParentizado(arbol); writeln;}
+
+   {******************************************}
+   write('eliminar 5...');
+   eliminarClave(arbol, 5);
    preordenParentizado(arbol); writeln;
+
+   write('eliminar 6...');
+   eliminarClave(arbol, 6);
+   preordenParentizado(arbol); writeln;
+
+   write('eliminar 2...');
+   eliminarClave(arbol, 2);
+   preordenParentizado(arbol); writeln;
+
+   write('eliminar 4...');
+   eliminarClave(arbol, 4);
+   preordenParentizado(arbol); writeln;
+
+   write('eliminar 3...');
+   eliminarClave(arbol, 3);
+   preordenParentizado(arbol); writeln;
+
+   write('eliminar 1...');
+   eliminarClave(arbol, 1);
+   preordenParentizado(arbol); writeln;
+
+   write('eliminar 7...');
+   eliminarClave(arbol, 7);
+   preordenParentizado(arbol); writeln;
+
+   {******************************************}
 
 end.

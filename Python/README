@@ -5,5 +5,5 @@ Antes de nada se debe instalar Python 3:
  · Ubuntu / Debian:
  $ sudo apt-get install python3
 
-Para ejecuta, solo basta con introducir en terminal:
+Para ejecutar, solo basta con introducir en terminal:
 $ python3 ./bst_program.py
