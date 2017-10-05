@@ -5,11 +5,10 @@
 
 type bst =
     Empty
-    |Node of int * bst * bst;; (* Esto no debería estar aquí *)
+    |Node of int * bst * bst;;
 
 let emptyTree = Empty;;
 
-(* Si el arbol de entrada esta vacio, peta *)
 let leftChild = function
     Node(_,left,_) -> left;;
 
@@ -23,55 +22,54 @@ let isEmptyTree = function
     Empty -> true
     |_ -> false;;
 
-(* La función devuelve el nodo a insertar cuando el árbol está vacío.
-   Si no está vacío y la clave coincide, devuelve el propio nodo.
-   Cuando no está vacío y la clave no coincide, devuelve el nodo
-   modificado para que el subárbol correspondiente sea el resultado
-   de la llamada recursiva *)
-let rec insertKeyR k = function
+(* Returns the node to insert when the tree is empty.
+   If the key already existed, returns the node containing it.
+   Otherwise, returns the current node with one of its children
+   being the result of the recursive call *)
+let rec insertR k = function
     Empty -> Node(k,Empty,Empty)
-    |Node(key,left,right) -> if k < key
-                             then Node(key,insertKeyR k left, right)
-                             else if k > key
-                                  then Node(key,left,insertKeyR k right)
-                                  else Node(key,left,right);; (* Duplicates are ignored *)
+    |Node(key,left,right) -> if k < key then
+                                Node(key,insertR k left, right)
+                             else if k > key then
+                                Node(key,left,insertR k right)
+                             else Node(key,left,right);;
 
 let insertKey key tree =
-    insertKeyR key tree;;
+    insertR key tree;;
 
-let rec searchKeyR k = function
+let rec searchR k = function
     Empty -> Empty
-    |Node(key,left,right) -> if k = key
-                             then Node(key,left,right)
-                             else if k < key
-                                then searchKeyR k left
-                                else searchKeyR k right;;
+    |Node(key,left,right) -> if k = key then
+                                Node(key,left,right)
+                             else if k < key then
+                                searchR k left
+                             else searchR k right;;
 
 let searchKey key tree =
-    searchKeyR key tree;;
+    searchR key tree;;
 
-let rec delete_r key tree = (* El segundo argumento es el nodo padre *)
-    let rec del_aux node parentNode =
+let rec deleteR key tree =
+(* This function is first called only when 'node' has 2 children, and
+   recursive calls only happen if this argument is going to be non empty,
+   so we don't need to check if 'node' is empty before calling rightChild *)
+    let rec delAux node parentNode =
         match (rightChild node) with
-        (* Sabemos que node nunca va a ser vacío: en la primera llamada porque
-        solo se llama a esta funcion si el nodo tiene dos hijos, y en las
-        llamadas recursivas porque la llamada solo se hace si el hijo derecho no es vacio *)
-            Node(key,left,right) -> let (foundK,newRight) = del_aux (rightChild node) node
+            Node(key,left,right) -> let (foundK,newRight) = delAux (rightChild node) node
                                     in foundK, Node(root parentNode,leftChild parentNode,newRight)
             |Empty -> root node, leftChild node
     in match tree with
-        Empty -> Empty (* La clave no estaba en el árbol *)
-        |Node(k,left,right) -> if key < k
-                               then Node(k,delete_r key left,right)
-                               else if key > k
-                                    then Node(k,left,delete_r key right)
-                                    else if left = Empty (* A partir de aquí ya hemos encontrado el nodo a eliminar (tree) *)
-                                         then right
-                                         else if right = Empty
-                                            then left
-                                            else let (foundk,newleft) = del_aux left left
-                                                in Node(foundk,newleft,right);;
+        Empty -> Empty (* The key was not in the tree *)
+        |Node(k,left,right) -> if key < k then
+                                    Node(k,deleteR key left,right)
+                               else if key > k then
+                                    Node(k,left,deleteR key right)
+                               (* From this point on we have found the node with the key to delete *)
+                               else if left = Empty then
+                                    right
+                               else if right = Empty then
+                                    left
+                               else let (foundk,newleft) = delAux left left
+                                    in Node(foundk,newleft,right);;
 
 let deleteKey key tree =
-	delete_r key tree;;
-1
+	deleteR key tree;;

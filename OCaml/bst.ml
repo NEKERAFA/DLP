@@ -91,7 +91,7 @@ let rec deleteR tree key =
                                     deleteR left key
                                else if key > k then
                                     deleteR right key
-                               (* From this point we have found the node with the key to delete *)
+                               (* From this point on we have found the node with the key to delete *)
                                else if !left = Empty then
                                     tree := !right
                                else if !right = Empty then
@@ -136,7 +136,7 @@ let deleteI tree key =
 
 				 if (!parentRm = Empty) then
 				 	tree := !nonEmptyChild
-				 else if ((leftChild parentRm) = rm) then (*** TODO Comprobar si la comparación tiene que ser por contenido *)
+				 else if (!(leftChild parentRm) = !rm) then
 				 	(leftChild parentRm) := !nonEmptyChild
 				 else
 				 	(rightChild parentRm) := !nonEmptyChild;

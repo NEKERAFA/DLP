@@ -113,7 +113,7 @@ void insertKey(tBST *T, tKey key) {
 }
 
 /**********************************************************************/
-// TODO preguntar por que por referencia
+
 tPosT searchI(tBST *T, tKey key) {
     tPosT node = *T;
     while ((node != NULL) && (node->key != key)) {

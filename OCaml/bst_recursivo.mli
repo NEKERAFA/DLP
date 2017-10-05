@@ -3,9 +3,7 @@
  * Eva Suárez García: eva.suarez.garcia (eva.suarez.garcia@udc.es)
  *)
 
-type bst =
-	 Empty
-	|Node of int * bst * bst
+type bst
 
 val emptyTree: bst
 val insertKey: int -> bst -> bst
