@@ -36,7 +36,7 @@ bst.insertKey(tree, 5)
 bst.insertKey(tree, 7)
 
 bracketPreorder(tree); print()
-'''
+
 print("Search 1... " + str(bst.root(bst.searchKey(tree, 1))))
 print("Search 2... " + str(bst.root(bst.searchKey(tree, 2))))
 print("Search 3... " + str(bst.root(bst.searchKey(tree, 3))))
@@ -44,7 +44,7 @@ print("Search 4... " + str(bst.root(bst.searchKey(tree, 4))))
 print("Search 5... " + str(bst.root(bst.searchKey(tree, 5))))
 print("Search 6... " + str(bst.root(bst.searchKey(tree, 6))))
 print("Search 7... " + str(bst.root(bst.searchKey(tree, 7))))
-'''
+
 '''
 print('Delete 5...', end = " ") por que end = " "?
 bst.deleteKey(tree, 5)
@@ -63,7 +63,6 @@ bst.deleteKey(tree, 2)
 bracketPreorder(tree); print()
 '''
 ###################################
-'''
 print('Delete 5...', end = " ")
 bst.deleteKey(tree, 5)
 bracketPreorder(tree); print()
@@ -97,5 +96,4 @@ bst.deleteKey(tree, 7)
 bracketPreorder(tree); print()
 
 print("Empty tree: " + str(bst.isEmptyTree(tree)))
-'''
 ###################################

@@ -48,6 +48,8 @@ def insertR(node, key):
 		insertR(node['right'], key)
 	# Duplicates are ignored
 
+################################################################################
+
 def insertI(tree, key):
 	newNode = createNodeT()
 	newNode['key'] = key
@@ -59,7 +61,7 @@ def insertI(tree, key):
 		tree['left'] = newNode['left']
 	else:
 		parent = {}
-		child = tree # TODO no entiendo por que a veces la asignacion se puede hacer directa y otras no
+		child = tree
 
 		# Search for the key's right place in the tree
 		while (child != {}) and (child['key'] != key):
@@ -76,7 +78,6 @@ def insertI(tree, key):
 			else:
 				parent['right'] = newNode
 		# Duplicates are ignored
-# Insert iterative
 
 ################################################################################
 
@@ -127,18 +128,15 @@ def deleteR(tree, key):
 			delAux(node['right'])
 		else:
 			aux['key'] = node['key']
-			# If left subtree is empty, remove all keys in subtree
-            # TODO no entiendo para que esta comprobacion
+			# Replace 'node' with its left child TODO dime si se entiende
 			if node['left'] == {}:
 				del node['key']
 				del node['left']
 				del node['right']
-			# If left subtree isn't node, replace all keys by left subtree keys
-			else: # TODO wtf Rafa si llegamos aqui es porque node['right'] == {}
-                  # que pinta esta asignacion aqui entonces?
-				node['key'] = node['right']['key']
-				node['key'] = node['right']['key']
-				node['key'] = node['right']['key']
+			else:
+				node['key'] = node['left']['key']
+				node['key'] = node['left']['key']
+				node['key'] = node['left']['key']
 	# delAux
 
 	if tree != {}:
@@ -148,34 +146,29 @@ def deleteR(tree, key):
 			deleteR(tree['right'], key)
 		else:
 			aux = tree
-			# Delete node with at most one child
+			# Delete node with at most one child replacing it
+			# with a non empty child TODO el tema de la segunda comprobacion explicarlo en la memoria mejor
 			if tree['left'] == {}:
-				# If right child is empty, delete all parent's keys
-                # TODO por que esta asignacion si puedes hacer tree = tree['right']?
 				if tree['right'] == {}:
 					del tree['key']
 					del tree['left']
 					del tree['right']
-				# If right child isn't empty, replace all parent's keys
 				else:
 					tree['key'] = tree['right']['key']
 					tree['left'] = tree['right']['left']
 					tree['right'] = tree['right']['right']
 			elif tree['right'] == {}:
-				# If right child is empty, delete all parent's keys
-                # TODO mismo de arriba
 				if tree['left'] == {}:
 					del tree['key']
 					del tree['left']
 					del tree['right']
-				# If right child isn't empty, replace all parent's keys
 				else:
 					tree['key'] = tree['left']['key']
 					tree['right'] = tree['left']['right']
 					tree['left'] = tree['left']['left']
+			# Delete node with two children
 			else:
 				delAux(tree['left'])
-# recursive delete
 
 ################################################################################
 
@@ -203,8 +196,7 @@ def deleteI(tree, key):
 		# Remove leaf node
 		if numChildren == 0:
 			if parentRm is None:
-			# Remove all key in tree
-            # TODO por que no tree = {}?
+			# The root was the only node in the tree
 				del tree['key']
 				del tree['left']
 				del tree['right']
@@ -223,7 +215,6 @@ def deleteI(tree, key):
 				nonEmptyChild = rm['left']
 
 			if parentRm is None:
-				# TODO por que no tree = nonEmptyChild?
 					tree['key'] = nonEmptyChild['key'] # TODO no esta mal indentado?
 					tree['left'] = nonEmptyChild['left']
 					tree['right']  = nonEmptyChild['right']
@@ -240,14 +231,13 @@ def deleteI(tree, key):
 			# Search for the node with the greatest key of the left subtree
 			while maxLeftChild['right'] != {}:
 				parentRm = maxLeftChild
-				maxLeftChild = maxLeftChild['left'] # TODO esto esta mal, es el derecho .-.
+				maxLeftChild = maxLeftChild['right'] 
 
 			rm['key'] = maxLeftChild['key']
 			if parentRm == rm:
 				parentRm['left'] = maxLeftChild['left']
 			else:
 				parentRm['right'] = maxLeftChild['left']
-# Iterative delete
 
 ################################################################################
 
