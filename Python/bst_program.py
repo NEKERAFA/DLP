@@ -1,4 +1,8 @@
-#!/usr/bin/python3
+'''
+	Rafael Alcalde Azpiazu: rafael.alcalde.azpiazu (rafael.alcalde.azpiazu@udc.es)
+	Eva Suarez Garcia: eva.suarez.garcia (eva.suarez.garcia@udc.es)
+'''
+
 import bst
 
 def bracketPreorder(T):

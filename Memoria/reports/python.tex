@@ -1,4 +1,4 @@
-\section{Python's Implementation} % Implementación en Python
+\section{Python} % Implementación en Python
 
 \hspace{2em}Interpreter used: \texttt{python3} version 3.5.2.\\
 
@@ -16,16 +16,37 @@ La implementación de referencia del intérprete de Python es CPython, el cual e
 
 \subsubsection{Advantages and Disadvantages} % Análisis de ventajas y desventajas
 
-Lo primero a comentar es que en Python no tenemos gestión manual de memoria, por lo que no existen los punteros y la reserva y liberación de memoria manual como ocurre en Java y OCaml. \\
+La primera diferencia que nos encontramos en Python con respecto a Pascal es que Python es interpretado, permitiendo no tener que compilar el código cada vez que se modifica. Con respecto a esto podemos afirmar que el propio intérprete nos presenta más información cuando se produce un error que en el resto de lenguajes analizados, muy a la par del intérprete bytecode de Java. \\
 
-Por otro lado, los parámetros de las funciones son pasados por referencia en Python. Esto nos ha permitido simplificar la forma de trabajar con el árbol, pareciéndose a la implementación de Pascal en muchos casos.
+Otra cosa que podemos comentar es que en Python no tenemos gestión manual de memoria, por lo que tenemos las mismas implicaciones de Java y OCaml que comentar en este aspecto. \\
+
+Por otro lado, los parámetros de las funciones son pasados por referencia en Python. Esto nos ha permitido simplificar la forma de trabajar con el árbol, pareciéndose a la implementación de Pascal en muchos casos. \\
+
+Un hecho en contra a comentar de este lenguaje es que al no existir método alguno de declarar el tipo de las variables, no hay forma de forzar al programador a que pase unos tipos de variables concretos a la función, dando error en ejecución. En nuestro caso, esto también implica en que el programador puede intentar insertar claves de distinto tipo. \\
+
+Como ventaja de esto último, debido al carecer de forma de declarar los tipos, la propia implementación permite usar como clave cualquier tipo que permita usar expresiones de comparación. \\
+
+Otro hecho en contra es que el propio lenguaje no tiene forma de definir variables o funciones locales / privadas a menos que sean dentro de diferentes scopes (variable definidas dentro de una función). Esto supone que todas las funciones definidas en el módulo principal son públicas a quien lo use, sin restricción alguna.
 
 \subsubsection{Implementation} % Análisis de implementación
 
 La principal diferencia en la implementación con respecto a todos los demás lenguajes analizados ha sido la traducción de tipos. En Python las variables son de tipo dinámico y no se declaran, por lo que se ha eliminado toda la definición de tipos presente en los demás lenguajes. \\
 
-% TODO comprobar el funcionamiento de char y strings
+Debido a esto, hemos definido el árbol como un diccionario (un array asociativo) que contiene tres claves: \texttt{key} que guarda la clave del nodo, \texttt{left} y \texttt{right} que los diccionarios de los hijos izquierdo y derecho.
 
-% Al no haber tipos, no hay inguna forma de forzar al programador de que todas las claves sean del mismo tipo, por lo que puede ser inseguro
+Con respecto a las funciones, podemos comentar de su implementación que es casi todo directo a excepción de las siguientes funciones:
+\begin{itemize}
+	\item \texttt{crearNodoA}: Crea un diccionario con la clave \texttt{key} a \texttt{None} y las claves \texttt{left} y \texttt{right} como diccionarios vacíos. Debido a lo comentado arriba, esta función no se puede hacer pública.
+	\item \texttt{arbolVacio}: Devuelve un diccionario vacío.
+	\item \texttt{insertar\_r}
+	\item \texttt{insertar\_i}
+	\item \texttt{buscar\_r}
+	\item \texttt{buscar\_i}
+	\item \texttt{sup2}
+	\item \texttt{eliminar\_r}
+	\item \texttt{eliminar\_i}
+\end{itemize}
+
+Como conclusión, esta implementación fue la más sencilla en cuanto a que la traducción fue directa.
 
 \subsubsection{Possible Enhancements} % Posibles mejoras

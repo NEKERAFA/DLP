@@ -6,4 +6,4 @@ Antes de nada se debe instalar Python 3:
  $ sudo apt-get install python3
 
 Para ejecuta, solo basta con introducir en terminal:
-$ ./bst_program.py
+$ python3 ./bst_program.py
