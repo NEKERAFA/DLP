@@ -8,7 +8,7 @@ Python es un lenguaje de programación de propósito general multiparadigma. Es 
 
 Python usa un tipado fuerte y dinámico y no declarativo, permitiendo duck typing. Contiene un recolector de memoria automática, siendo el intérprete el encargado de reservar y eliminar la memoria según procesa el código. \\
 
-La implementación de referencia del intérprete de Python es CPython, el cual es open source y es administrado por la Python Software Foundation.
+A pesar de tener muchas implementaciones del intérprete en diferentes lenguajes, se ha acordado que la implementación de referencia sea CPython, el cual está programado en C y es open source. Actualmente lo administra la Python Software Foundation.
 
 \subsection{Analysis}
 
@@ -34,14 +34,16 @@ Debido a esto, hemos definido el árbol como un diccionario (un array asociativo
 
 Con respecto a las funciones, podemos comentar de su implementación que es casi directa a excepción de las siguientes funciones:
 \begin{itemize}
-	\item \texttt{crearNodoA}: Como ya comentamos, en Python no se puede asignar memoria manualmente, así que esta función solo crea un diccionario con la clave \texttt{key} a \texttt{None} y las claves \texttt{left} y \texttt{right} como diccionarios vacíos. Cabe destacar que esta función no se puede hacer pública.
+	\item \texttt{crearNodoA}: Como ya comentamos, en Python no se puede asignar memoria manualmente, por lo que esta función lo único que hace es declarar y devolver un diccionario con la clave \texttt{key} a \texttt{None} y las claves \texttt{left} y \texttt{right} como diccionarios vacíos. Cabe destacar que esta función no se puede hacer pública debido a que en Python no hay tipos ``locales/privados''.
 	\item \texttt{arbolVacio}: Devuelve un diccionario vacío en vez de un valor nulo.
-	\item \texttt{insertar\_r}: La única diferencia con Pascal es que en Python, si se asigna otro valor a un parámetro, el scope pasa a ser el de la función, por lo que, para insertar en el nodo hemos tenido que asignar los nuevos valores al nodo
-	\item \texttt{insertar\_i}: Pasa algo parecido a \texttt{insertar\_r} en el momento de asignarlo al árbol.
-	\item \texttt{sup2}: Cuando subimos el árbol izquierdo del nodo más a la derecha, hacemos una comprobación de este para que si está vacío para eliminar las claves, o hacer algo parecido a \texttt{insertar\_r} cuando contiene datos.
+	\item \texttt{insertar\_r}: La única diferencia con Pascal es que en Python, si se asigna otro valor a un parámetro de la función, el scope pasa a ser local a la función. Es por eso que, para insertar en el nodo hemos tenido que asignar los nuevos valores al nodo
+	\item \texttt{insertar\_i}: Pasa algo parecido a \texttt{insertar\_r} en el momento de asignar el nuevo nodo al árbol.
+	\item \texttt{sup2}: Cuando subimos el árbol izquierdo del nodo más a la derecha, hacemos una comprobación de este nodo para que si está vacío eliminemos las claves del diccionario, o hacer algo parecido a \texttt{insertar\_r} cuando contiene el nodo no está vacío.
 	\item \texttt{eliminar\_r}: Pasa algo parecido a \texttt{sup2} cuando subimos el único hijo del nodo a eliminar.
 \end{itemize}
 
-\subsubsection{Possible Enhancements} % Posibles mejoras
+\subsubsection{Otras aproximaciones}
 
-% TODO usar una clase por nodos
+Comentar que, debido a la naturaleza de Python, las mejoras o ventajas que nos puede aportar este lenguaje se aplican al momento de implementar y codificar, por lo que no vemos como aprovechar este lenguaje de otra forma. \\
+
+Lo que si que hay que destacar es que, como Python es un lenguaje que soporta diferente paradigmas, se podría pensar en usar una implementación orientada a objetos definiendo el módulo como una clase estática. Esta aproximación sería muy parecida a lo comentado en Java. Cabe destacar que con ese planteamiento también podríamos encapsular el nodo como una clase en vez de como un diccionario.
