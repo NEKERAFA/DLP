@@ -21,14 +21,7 @@ let rec bracketPreorder t =
 
 let tree = emptyTree ();;
 
-(*****************************)
-print_string ("Empty tree: " ^ (string_of_bool (isEmptyTree tree)) ^ "\n");;
-(*****************************)
-
 insertKey tree 4;;
-(*****************************)
-print_string ("Empty tree: " ^ (string_of_bool (isEmptyTree tree)) ^ "\n");;
-(*****************************)
 insertKey tree 4;;
 insertKey tree 2;;
 insertKey tree 6;;
@@ -47,7 +40,6 @@ print_string ("Search 5... " ^ (string_of_int (root (searchKey tree 5))) ^ "\n")
 print_string ("Search 6... " ^ (string_of_int (root (searchKey tree 6))) ^ "\n");;
 print_string ("Search 7... " ^ (string_of_int (root (searchKey tree 7))) ^ "\n");;
 
-(*)
 print_string "Delete 5...";
 deleteKey tree 5;;
 bracketPreorder tree;; print_string "\n";;
@@ -62,40 +54,4 @@ bracketPreorder tree;; print_string "\n";;
 
 print_string "Delete 2...";
 deleteKey tree 2;;
-bracketPreorder tree;; print_string "\n";;*)
-
-(*****************************)
-print_string "Delete 5...";
-deleteKey tree 5;;
 bracketPreorder tree;; print_string "\n";;
-
-print_string "Delete 5 again...";
-deleteKey tree 5;;
-bracketPreorder tree;; print_string "\n";;
-
-print_string "Delete 6...";
-deleteKey tree 6;;
-bracketPreorder tree;; print_string "\n";;
-
-print_string "Delete 2...";
-deleteKey tree 2;;
-bracketPreorder tree;; print_string "\n";;
-
-print_string "Delete 4...";
-deleteKey tree 4;;
-bracketPreorder tree;; print_string "\n";;
-
-print_string "Delete 3...";
-deleteKey tree 3;;
-bracketPreorder tree;; print_string "\n";;
-
-print_string "Delete 1...";
-deleteKey tree 1;;
-bracketPreorder tree;; print_string "\n";;
-
-print_string "Delete 7...";
-deleteKey tree 7;;
-bracketPreorder tree;; print_string "\n";;
-
-print_string ("Empty tree: " ^ (string_of_bool (isEmptyTree tree)) ^ "\n");;
-(*****************************)
