@@ -155,10 +155,6 @@ public class BstUtils {
 			deleteAux(del, node, node.right);
 		} else {
 			del.key = node.key;
-			// TODO enseñar a Rafa y comentar en memorias de Java y OCaml
-			// TODO si coinciden, parentNode era el nodo a eliminar y
-			// no queremos perder sus hijos derechos, reemplazamos los izquierdos
-			// Es una comprobacion como la de deleteI
 			// Check if the left subtree of 'del' didn't have a right child
 			if (parentNode.key == node.key) {
 				parentNode.left = node.left;

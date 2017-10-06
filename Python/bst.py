@@ -4,7 +4,7 @@
 '''
 
 ################################################################################
-def createNodeT(): # TODO comentar que no asigna memoria o algo
+def createNodeT():
 	return {'key': None, 'left': {}, 'right': {}}
 
 ################################################################################
@@ -36,9 +36,9 @@ def emptyTree():
 
 def insertR(node, key):
 	# Insert in empty tree
-	if node == {}: # TODO la adaptacion no es directa
+	if node == {}:
 		node['key'] = key
-		node['left'] = {} # TODO no funciona hacer node = createNodeT()
+		node['left'] = {}
 		node['right'] = {}
 	# Insert in left child
 	elif key < node['key']:
@@ -54,7 +54,6 @@ def insertI(tree, key):
 	newNode = createNodeT()
 	newNode['key'] = key
 
-	# TODO la asignacion tiene que hacerse campo a campo
 	if tree == {}:
 		tree['key'] = newNode['key']
 		tree['right'] = newNode['right']
@@ -82,8 +81,8 @@ def insertI(tree, key):
 ################################################################################
 
 def insertKey(tree, key):
-	insertI(tree, key)
-	#insertR(tree, key)
+	#insertI(tree, key)
+	insertR(tree, key)
 
 ################################################################################
 
@@ -99,7 +98,7 @@ def searchR(node, key):
 
 ################################################################################
 
-def search_i(tree, key):
+def searchI(tree, key):
 	node = tree
 
 	while node != {} and node['key'] != key:
@@ -113,8 +112,8 @@ def search_i(tree, key):
 ################################################################################
 
 def searchKey(tree, key):
-	return searchR(tree, key)
-	#return search_i(tree, key)
+	#return searchR(tree, key)
+	return searchI(tree, key)
 
 ################################################################################
 
@@ -128,8 +127,7 @@ def deleteR(tree, key):
 			delAux(node['right'])
 		else:
 			aux['key'] = node['key']
-			# Replace 'node' with its left child TODO dime si se entiende
-			# Myah u.u
+			# Replace 'node' with its left child
 			if node['left'] == {}:
 				del node['key']
 				del node['left']
@@ -147,7 +145,7 @@ def deleteR(tree, key):
 		else:
 			aux = tree
 			# Delete node with at most one child replacing it
-			# with a non empty child TODO el tema de la segunda comprobacion explicarlo en la memoria mejor
+			# with a non empty child
 			if tree['left'] == {}:
 				if tree['right'] == {}:
 					del tree['key']
@@ -231,7 +229,7 @@ def deleteI(tree, key):
 			# Search for the node with the greatest key of the left subtree
 			while maxLeftChild['right'] != {}:
 				parentRm = maxLeftChild
-				maxLeftChild = maxLeftChild['right'] 
+				maxLeftChild = maxLeftChild['right']
 
 			rm['key'] = maxLeftChild['key']
 			if parentRm == rm:
@@ -242,5 +240,5 @@ def deleteI(tree, key):
 ################################################################################
 
 def deleteKey(tree, key):
-	#deleteR(tree, key)
-	deleteI(tree, key)
+	deleteR(tree, key)
+	#deleteI(tree, key)

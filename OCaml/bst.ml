@@ -89,7 +89,6 @@ let rec deleteR tree key =
 			Node(key,left,right) -> delAux (rightChild node) node
 			|Empty -> tree := Node(root node, leftChild tree, rightChild tree);
 					  (* Check if the left subtree didn't have a right child *)
-					  (*TODO comentar a Rafa si hace falta que !parentNode = !node no funciona*)
 					  if (root parentNode) = (root node) then
 					  	(leftChild parentNode) := !(leftChild node)
 					  else
