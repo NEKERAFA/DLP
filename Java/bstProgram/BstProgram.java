@@ -28,16 +28,7 @@ public class BstProgram {
 	public static void main(String[] args) {
 		Bst tree = BstUtils.emptyTree();
 
-        //---------------------------
-        System.out.println("Empty tree: " + BstUtils.isEmptyTree(tree));
-        //---------------------------
-
 		BstUtils.insertKey(tree, 4);
-
-        //---------------------------
-        System.out.println("Empty tree: " + BstUtils.isEmptyTree(tree));
-        //---------------------------
-
 		BstUtils.insertKey(tree, 4);
 		BstUtils.insertKey(tree, 2);
 		BstUtils.insertKey(tree, 6);
@@ -57,7 +48,6 @@ public class BstProgram {
 		System.out.println("Search 6... " + BstUtils.root(BstUtils.searchKey(tree, 6)));
 		System.out.println("Search 7... " + BstUtils.root(BstUtils.searchKey(tree, 7)));
 
-        /*
 		System.out.print("Delete 5...");
 		BstUtils.deleteKey(tree, 5);
 		bracketPreorder(tree); System.out.println();
@@ -76,44 +66,6 @@ public class BstProgram {
 		BstUtils.deleteKey(tree, 2);
 		bracketPreorder(tree);
 		System.out.println();
-        */
-
-        //---------------------------
-        System.out.print("Delete 5...");
-        BstUtils.deleteKey(tree, 5);
-        bracketPreorder(tree); System.out.println();
-
-        System.out.print("Delete 5 again...");
-        BstUtils.deleteKey(tree, 5);
-        bracketPreorder(tree); System.out.println();
-
-        System.out.print("Delete 6...");
-        BstUtils.deleteKey(tree, 6);
-        bracketPreorder(tree); System.out.println();
-
-        System.out.print("Delete 2...");
-        BstUtils.deleteKey(tree, 2);
-        bracketPreorder(tree); System.out.println();
-
-        System.out.print("Delete 4...");
-        BstUtils.deleteKey(tree, 4);
-        bracketPreorder(tree); System.out.println();
-
-        System.out.print("Delete 3...");
-        BstUtils.deleteKey(tree, 3);
-        bracketPreorder(tree); System.out.println();
-
-        System.out.print("Delete 1...");
-        BstUtils.deleteKey(tree, 1);
-        bracketPreorder(tree); System.out.println();
-
-        System.out.print("Delete 7...");
-        BstUtils.deleteKey(tree, 7);
-        bracketPreorder(tree); System.out.println();
-
-        System.out.println("Empty tree: " + BstUtils.isEmptyTree(tree));
-        //---------------------------
-
 	}
 
 }

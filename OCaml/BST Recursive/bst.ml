@@ -26,29 +26,23 @@ let isEmptyTree = function
    If the key already existed, returns the node containing it.
    Otherwise, returns the current node with one of its children
    being the result of the recursive call *)
-let rec insertR k = function
+let rec insertKey k = function
     Empty -> Node(k,Empty,Empty)
     |Node(key,left,right) -> if k < key then
-                                Node(key,insertR k left, right)
+                                Node(key,insertKey k left, right)
                              else if k > key then
-                                Node(key,left,insertR k right)
+                                Node(key,left,insertKey k right)
                              else Node(key,left,right);;
 
-let insertKey key tree =
-    insertR key tree;;
-
-let rec searchR k = function
+let rec searchKey k = function
     Empty -> Empty
     |Node(key,left,right) -> if k = key then
                                 Node(key,left,right)
                              else if k < key then
-                                searchR k left
-                             else searchR k right;;
+                                searchKey k left
+                             else searchKey k right;;
 
-let searchKey key tree =
-    searchR key tree;;
-
-let rec deleteR key tree =
+let rec deleteKey key tree =
 (* This function is first called only when 'node' has 2 children, and
    recursive calls only happen if this argument is going to be non empty,
    so we don't need to check if 'node' is empty before calling rightChild *)
@@ -60,9 +54,9 @@ let rec deleteR key tree =
     in match tree with
         Empty -> Empty (* The key was not in the tree *)
         |Node(k,left,right) -> if key < k then
-                                    Node(k,deleteR key left,right)
+                                    Node(k,deleteKey key left,right)
                                else if key > k then
-                                    Node(k,left,deleteR key right)
+                                    Node(k,left,deleteKey key right)
                                (* From this point on we have found the node with the key to delete *)
                                else if left = Empty then
                                     right
@@ -70,6 +64,3 @@ let rec deleteR key tree =
                                     left
                                else let (foundk,newleft) = delAux left left
                                     in Node(foundk,newleft,right);;
-
-let deleteKey key tree =
-	deleteR key tree;;
