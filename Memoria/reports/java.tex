@@ -42,7 +42,6 @@ Now, let us move on to the adaptation of procedures and functions. All of them h
 	\item \texttt{insertarI}: In a similar way to the mentioned above, receiving the tree itself allows inserting the root if it did not exist. % De modo similar a la anterior, recibir el propio árbol nos permite insertar la raíz si esta no existiera, lo que resultaría imposible de recibir directamente el nodo raíz. (paso de repetirme)
 	%EXP: Allow can be followed by an object + the infinitive, by a gerund, or by a noun. The gerund is used when the subject (en nuestro caso cual es el sujeto de allow, no hay, innecesario) of the action the gerund describes is unnecessary, as in for general statements.
 	\item \texttt{buscarR} y \texttt{buscarI}: The found node is wrapped in a \texttt{Bst} object in order to follow Pascal's specifications. In the first method, a \texttt{Node} argument is used instead of a \texttt{Bst} argument just for simplifying the code. % Al igual que con \texttt{hijoIzquierdo} y \texttt{hijoDerecho}, el nodo a devolver se envuelve en un objeto Bst para cumplir con la interfaz de Pascal. En la primera función, se usa un Node envez de un Bst solo por simplificar el código.
-	% TODO no se si les parecera mal lo de simplificar ie no se si es bueno mencionarlo o no
 	\item \texttt{sup2}: This procedure receives 3 parameters: 
 		\begin{itemize}
 			\item Node to be deleted (\textit{del}), so that we can replace its key with the greatest one from its left subtree.
