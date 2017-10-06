@@ -89,7 +89,7 @@ def insertKey(tree, key):
 
 def searchR(node, key):
 	if node == {}:
-		return None
+		return {}
 	elif (key == node['key']):
 		return node
 	elif (key < node['key']):
@@ -129,15 +129,15 @@ def deleteR(tree, key):
 		else:
 			aux['key'] = node['key']
 			# Replace 'node' with its left child TODO dime si se entiende
+			# Myah u.u
 			if node['left'] == {}:
 				del node['key']
 				del node['left']
 				del node['right']
 			else:
 				node['key'] = node['left']['key']
-				node['key'] = node['left']['key']
-				node['key'] = node['left']['key']
-	# delAux
+				node['right'] = node['left']['right']
+				node['left'] = node['left']['left']
 
 	if tree != {}:
 		if key < tree['key']:
@@ -173,8 +173,11 @@ def deleteR(tree, key):
 ################################################################################
 
 def deleteI(tree, key):
-	parentRm = None
-	rm = tree
+	numChildren = 0
+	rm = tree 				# Node to remove
+	parentRm = None			# Parent of the node to remove
+	nonEmptyChild = None	# If the node to remove has only one child, the one that isn't empty
+	maxLeftChild = None	# If the node to remove has two children, the node with the greatest key of the left subtree
 
 	# Search for the node to remove
 	while rm != {} and rm['key'] != key:
@@ -187,7 +190,6 @@ def deleteI(tree, key):
 
 	# If the key isn't in the tree, don't do anything
 	if rm != {}:
-		numChildren = 0 # TODO por que no declararlo arriba como en Pascal?
 		if rm['left'] != {}:
 			numChildren = numChildren+1
 		if rm['right'] != {}:
@@ -207,17 +209,15 @@ def deleteI(tree, key):
 
 		# Remove node with one child
 		elif numChildren == 1:
-			nonEmptyChild = None # TODO por que no lo defines arriba como en Pascal
-
 			if rm['left'] == {}:
 				nonEmptyChild = rm['right']
 			else:
 				nonEmptyChild = rm['left']
 
 			if parentRm is None:
-					tree['key'] = nonEmptyChild['key'] # TODO no esta mal indentado?
-					tree['left'] = nonEmptyChild['left']
-					tree['right']  = nonEmptyChild['right']
+				tree['key'] = nonEmptyChild['key']
+				tree['left'] = nonEmptyChild['left']
+				tree['right']  = nonEmptyChild['right']
 			elif parentRm['left'] == rm:
 				parentRm['left']  = nonEmptyChild
 			else:
@@ -226,7 +226,7 @@ def deleteI(tree, key):
 		# Remove node with two children
 		elif numChildren == 2:
 			parentRm = rm
-			maxLeftChild = rm['left'] # TODO mismo que nonEmptyChild en declaracion
+			maxLeftChild = rm['left']
 
 			# Search for the node with the greatest key of the left subtree
 			while maxLeftChild['right'] != {}:
