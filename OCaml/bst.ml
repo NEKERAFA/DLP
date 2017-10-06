@@ -52,7 +52,9 @@ let insertI tree key =
 			else
 				(rightChild parent) := !newNode;;
 
-let insertKey = insertR;;
+let insertKey =
+	insertR;;
+	(*insertI;;*)
 
 let rec searchR tree k =
 	match !tree with
@@ -74,7 +76,9 @@ let searchI tree key =
     done;
     node;;
 
-let searchKey = searchR;;
+let searchKey =
+	searchR;;
+	(*searchI;;*)
 
 let rec deleteR tree key =
     (* This function is first called only when 'node' has 2 children, and
@@ -84,7 +88,12 @@ let rec deleteR tree key =
 		match !(rightChild node) with
 			Node(key,left,right) -> delAux (rightChild node) node
 			|Empty -> tree := Node(root node, leftChild tree, rightChild tree);
-                      (rightChild parentNode) := !(leftChild node)
+					  (* Check if the left subtree didn't have a right child *)
+					  (*TODO comentar a Rafa si hace falta que !parentNode = !node no funciona*)
+					  if (root parentNode) = (root node) then
+					  	(leftChild parentNode) := !(leftChild node)
+					  else
+                      	(rightChild parentNode) := !(leftChild node)
 	in match !tree with
 	 	Empty -> () (* The key was not in the tree *)
 		|Node(k,left,right) -> if key < k then
@@ -96,7 +105,7 @@ let rec deleteR tree key =
                                     tree := !right
                                else if !right = Empty then
                                     tree := !left
-                               else delAux left left;;
+                               else delAux left tree;; (*TODO cambiar en la memoria, antes se llamaba con left left*)
 
 let deleteI tree key =
 	let rm = ref (!tree) in
@@ -160,4 +169,6 @@ let deleteI tree key =
 				 else
 				 	(rightChild parentMaxLeftChild) := !(leftChild maxLeftChild);;
 
-let deleteKey = deleteI;;
+let deleteKey =
+	deleteR;;
+	(*deleteI;;*)

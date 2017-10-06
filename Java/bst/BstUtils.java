@@ -101,8 +101,8 @@ public class BstUtils {
 	}
 
 	public static void insertKey(Bst tree, int key) {
-		insertI(tree, key);
-		//insertR(tree.root, tree, key);
+		//insertI(tree, key);
+		insertR(tree.root, tree, key);
 	}
 
 	private static Bst searchR(Node node, int key) {
@@ -139,8 +139,8 @@ public class BstUtils {
 	}
 
 	public static Bst searchKey(Bst tree, int key) {
-		return searchI(tree, key);
-		//return searchR(tree.root, key);
+		//return searchI(tree, key);
+		return searchR(tree.root, key);
 	}
 
 	/*
@@ -155,7 +155,16 @@ public class BstUtils {
 			deleteAux(del, node, node.right);
 		} else {
 			del.key = node.key;
-			parentNode.right = node.left;
+			// TODO enseñar a Rafa y comentar en memorias de Java y OCaml
+			// TODO si coinciden, parentNode era el nodo a eliminar y
+			// no queremos perder sus hijos derechos, reemplazamos los izquierdos
+			// Es una comprobacion como la de deleteI
+			// Check if the left subtree of 'del' didn't have a right child
+			if (parentNode.key == node.key) {
+				parentNode.left = node.left;
+			} else {
+				parentNode.right = node.left;
+			}
 		}
 	}
 
@@ -288,7 +297,7 @@ public class BstUtils {
 	}
 
 	public static void deleteKey(Bst tree, Integer key) {
-		deleteI(tree, key);
-		//deleteR(tree.root, tree, key);
+		//deleteI(tree, key);
+		deleteR(tree.root, tree, key);
 	}
 }

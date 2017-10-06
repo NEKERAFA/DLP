@@ -107,9 +107,11 @@ void insertI(tBST *T, tKey key) {
 	}
 }
 
+/***********************************************************************/
+
 void insertKey(tBST *T, tKey key) {
-	insertR(T, key);
-	//insertI(T, key);
+	//insertR(T, key);
+	insertI(T, key);
 }
 
 /**********************************************************************/
@@ -138,6 +140,8 @@ tPosT searchR(tBST T, tKey key) {
 	else
 		return searchR(T->right, key);
 }
+
+/***********************************************************************/
 
 tBST searchKey(tBST T, tKey key) {
 	//return searchR(T, key);
@@ -257,13 +261,15 @@ void deleteI(tBST *T, tKey key) {
 				del = maxLeftChild;
 				break;
 			// case 2
-		} 
+		}
 
 		free(del);
 	}
 }
 
+/**********************************************************************/
+
 void deleteKey(tBST *T, tKey key) {
-	deleteR(T, key);
-	//deleteI(T, key);
+	//deleteR(T, key);
+	deleteI(T, key);
 }
