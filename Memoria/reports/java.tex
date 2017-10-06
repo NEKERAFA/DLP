@@ -41,15 +41,31 @@ Now, let us move on to the adaptation of procedures and functions. All of them h
 	\item \texttt{insertarR}: Instead of traversing the tree with a \texttt{Bst} (the equivalent to \texttt{tABB}), we use a \texttt{Node}. Besides, we add a new argument \texttt{Bst} representing the tree whose root node is the parent node of our \texttt{Node} argument. Remember that at this point, our \texttt{Node} argument is just a copy of the pointer we want to modify. By using the parent node, we can access the pointer we actually want to change. Initially, \texttt{Bst} is the tree in which we want to insert, so that we have real access to the root node (and not a copy) in the case we need to insert in there. % En lugar de recorrer el árbol con el equivalente a un tABB, utilizamos un Node. Además, añadimos un nuevo argumento, de tipo Bst, representando el árbol cuya raíz es el nodo padre del Node. Debido al paso por valor de Java, el argumento Node no es más que una copia del puntero que queremos actualizar, por lo que no podemos hacer los cambios sobre este argumento. En su lugar, utilizamos el Bst padre, que sí contiene el puntero real que queremos actualizar accesible a través de su raíz. Inicialmente, Bst es el propio árbol en el que hay que insertar, lo que nos permite tener acceso real a la raíz en caso de que no exista.
 	\item \texttt{insertarI}: In a similar way to the mentioned above, receiving the tree itself allows inserting the root if it did not exist. % De modo similar a la anterior, recibir el propio árbol nos permite insertar la raíz si esta no existiera, lo que resultaría imposible de recibir directamente el nodo raíz. (paso de repetirme)
 	%EXP: Allow can be followed by an object + the infinitive, by a gerund, or by a noun. The gerund is used when the subject (en nuestro caso cual es el sujeto de allow, no hay, innecesario) of the action the gerund describes is unnecessary, as in for general statements.
-	\item \texttt{buscarR} y \texttt{buscarI}: The found node is wrapped in a \texttt{Bst} object in order to follow Pascal's specifications. In the first method, a \texttt{Node} argument is used instead of a \texttt{Bst} argument just for simplifying the code. % Al igual que con \texttt{hijoIzquierdo} y \texttt{hijoDerecho}, el nodo a devolver se envuelve en un objeto Bst para cumplir con la interfaz de Pascal. En la primera función, se usa un Node envez de un Bst solo por simplificar el código.
+	\item \texttt{buscarR} and \texttt{buscarI}: The found node is wrapped in a \texttt{Bst} object in order to follow Pascal's specifications. In the first method, a \texttt{Node} argument is used instead of a \texttt{Bst} argument just for simplifying the code. % Al igual que con \texttt{hijoIzquierdo} y \texttt{hijoDerecho}, el nodo a devolver se envuelve en un objeto Bst para cumplir con la interfaz de Pascal. En la primera función, se usa un Node envez de un Bst solo por simplificar el código.
 	\item \texttt{sup2}: This procedure receives 3 parameters: 
 		\begin{itemize}
 			\item Node to be deleted (\textit{del}), so that we can replace its key with the greatest one from its left subtree.
 			\item \textit{Node} used as an iterator to traverse the tree to the right.
-			\item Parent node of the iterator node (\textit{parentNode}). This way we can move the iterator's left subtree to its parent once we have finished traversing the tree to the right. When moving the iterator's children, we have to make sure we insert them in the right place: to the left if \textit{parentNode} is actually \textit{del} (as we do not want to lose \textit{del's} right child), and to the right otherwise.
+			\item Parent node of the iterator node (\textit{parentNode}). This way we can move the iterator's left subtree to its parent once we have finished traversing the tree to the right. When moving the iterator's children, we have to make sure we insert them in the right place: to the left if \textit{parentNode} is actually \textit{del} (see Figure \ref{fig:ex1}) (as we do not want to lose \textit{del's} right child), and to the right otherwise (see Figure \ref{fig:ex2}).
 			% TODO dibujito explicativo aqui con los dos casos quedaria genial y serviria para explicar el caso de OCaml tambien
-		\end{itemize} 
+		\end{itemize}
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=30em]{images/ejemplo1.png}
+		\caption{Example of execution when \texttt{del} is actually \texttt{parentNode}}
+		\label{fig:ex1}
+	\end{figure}
+	
+	\begin{figure}[h]
+		\centering
+		\includegraphics[width=30em]{images/ejemplo2.png}
+		\caption{Example of execution when \texttt{del} is not \texttt{parentNode}}
+		\label{fig:ex2}
+	\end{figure}
+	
 	As Java does not allow nested methods, it is implemented as a private method from the utility class.
+	
 	% La adaptación de este procedimiento recibe tres argumentos. Por un lado, el nodo que se va a eliminar para que podamos cambiar su clave por la mayor clave de su subárbol izquierdo. Por otro lado, el nodo que se utiliza para ir recorriendo el árbol hacia la derecha y el padre de dicho nodo. De esta forma, podemos mover los hijos izquierdos del nodo al nodo padre, algo que, de nuevo, no podríamos hacer si sólo tuviéramos el nodo en sí. 
 	\item \texttt{eliminarR}: This method also receives 3 arguments.
 		\begin{itemize}
@@ -69,6 +85,6 @@ All of these classes belong to the package \texttt{bst}, while the main program 
 
 \begin{itemize}
 	\item The attributes could have been private, implementing only the getter and setter methods needed with the appropiate visibility so that the tree could not be modified from the main program without using the method provided to that effect. This way we could guarantee that the tree always preserved the structure of a binary search tree. % Los atributos podrían haberse puesto como privados, implementando tan solo los getters y setters necesarios con la visibilidad apropiada para que el árbol no pudiera ser modificado desde el programa principal sin usar los métodos definidos para tal efecto. De esta forma, podría garantizarse que el árbol siempre mantuviera la estructura propia de un árbol binario de búsqueda.
-	\item Methods could have been owned by the Bst class itself. This would imply that methods would not need to receive the tree as an argument, and the resulting code would be more natural for an object-oriented language. % Los métodos podrían haberse implementado como propios de la clase Bst, en lugar de en una clase aparte. De este modo recibirían menos parámetros (ya que no necesitarían recibir el árbol a tratar) y la implementación sería más natural y propia de la orientación a objetos.
-	\item Java allows us to define parametric classes, which would result in defining just one Bst that would be valid for all types of keys (or at least, all key types with a comparison method). The key type would then be determined at the moment of declaring each Bst variable. % Java nos permite definir las clases como paramétricas, lo que nos permitiría no tener que definir un árbol binario de búsqueda para cada tipo de clave, sino uno general en el que el tipo de clave se especificaría en el momento de declarar la variable Bst.
+	\item Methods could have been owned by the \texttt{Bst} class itself. This would imply that methods would not need to receive the tree as an argument, and the resulting code would be more natural for an object-oriented language. % Los métodos podrían haberse implementado como propios de la clase Bst, en lugar de en una clase aparte. De este modo recibirían menos parámetros (ya que no necesitarían recibir el árbol a tratar) y la implementación sería más natural y propia de la orientación a objetos.
+	\item Java allows us to define parametric classes, which would result in defining just one \texttt{Bst} that would be valid for all types of keys (or at least, all key types with a comparison method). The key type would then be determined at the moment of declaring each \texttt{Bst} variable. % Java nos permite definir las clases como paramétricas, lo que nos permitiría no tener que definir un árbol binario de búsqueda para cada tipo de clave, sino uno general en el que el tipo de clave se especificaría en el momento de declarar la variable Bst.
 \end{itemize}

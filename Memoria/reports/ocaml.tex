@@ -25,10 +25,11 @@ This was the most difficult and time-consuming adaptation to do, as sticking to 
 
 \subsubsection{Implementation} % Análisis de implementacitón
 \hspace{1.5em}The tree is represented by the type \texttt{bst}. This type can have two different values: \texttt{Empty} and \texttt{Node(int, bst ref, bst ref)}. Using \texttt{bst ref} as left and right children allow us to manipulate them in a somewhat similar way to Pascal's pointers. A \texttt{ref} is a structure containing a field \texttt{contents}, which is the information that is actually modified (equivalent to the pointer's content in some way).\\ % Nuestro árbol se representa mediante el tipo \texttt{bst}, que puede tomar los valores \texttt{Empty} y \texttt{Node(int, bst ref, bst ref)}. Utilizar \texttt{bst ref} como hijos derecho e izquierdo nos permite manejarlos de una manera en cierto modo similar a los punteros de Pascal. Una \texttt{ref} es una estructura con un campo \texttt{contents}, que es la información que realmente se modifica (una especie de equivalente al contenido del puntero).\\ 
+
 With regard to the functions, we have the following: % Con respecto a las funciones, tenemos lo siguiente:
 \begin{itemize}
 	\item \texttt{arbolVacio:} Receives \texttt{unit} (the equivalent to void in OCaml) and returns a \texttt{ref} containing \texttt{Empty}. % Recibe \texttt{unit}\footnote{El equivalente al vacío en OCaml} y devuelve una ref a Empty.
-	\item \texttt{hijoIzquierdo, hijoDerecho} and \texttt{raiz:} They match the tree's content with a Node(key,left,right) and return the pertinent component. Like in Pascal, they fail if the tree is empty. % Matchean el contenido del árbol con un Node(key,left,right) y devuelven el componente que corresponda. Al igual que en la implementación en Pascal, fallan si el árbol de entrada está vacío.
+	\item \texttt{hijoIzquierdo, hijoDerecho} and \texttt{raiz:} They match the tree's content with a \texttt{Node(key, left, right)} and return the pertinent component. Like in Pascal, they fail if the tree is empty. % Matchean el contenido del árbol con un Node(key,left,right) y devuelven el componente que corresponda. Al igual que en la implementación en Pascal, fallan si el árbol de entrada está vacío.
 	\item \texttt{esArbolVacio:} Returns true if the tree's content is \texttt{Empty} and false otherwise. % Si el contenido del árbol es Empty devuelve true, en cualquier otro caso devuelve false.
 	% TODO comprobar que de verdad la adaptacion es directa
 	\item \texttt{insertar\_r, insertar\_i, buscar\_r} and \texttt{buscar\_i:} The adaptation is direct.
@@ -38,7 +39,7 @@ With regard to the functions, we have the following: % Con respecto a las funcio
 \end{itemize}
 
 \subsubsection{Possible Enhancements} % Posibles mejoras
-\hspace{1.5em} Like in Java, in OCaml we could have defined a binary search tree for a generic key type (specified as 'a in the type definition).\\ % Al igual que en Java, en OCaml podría definirse un árbol binario de búsqueda para un tipo de clave genérico (especificado como 'a en la definición del tipo).\\
+\hspace{1.5em} Like in Java, in OCaml we could have defined a binary search tree for a generic key type (specified as \texttt{'a} in the type definition).\\ % Al igual que en Java, en OCaml podría definirse un árbol binario de búsqueda para un tipo de clave genérico (especificado como 'a en la definición del tipo).\\
 
 On the other hand, because it is required to stick to Pascal's implementation, we could not use the functional paradigm. Should we have done that, we would have had a more intuitive recursive implementation given the language. It would have been simpler and easier to implement as well, as we would not have needed to use refs. However, the iterative version would have been impossible to implement this way.\\ % Por otro lado, el tener que mantenerse fiel a la implementación en Pascal no nos ha permitido utilizar el paradigma funcional propiamente dicho. De haberlo hecho de esta forma, habríamos tenido una implementación recursiva más intuitiva para el lenguaje y más sencilla al no tener que manejar el equivalente a punteros, si bien la iterativa resultaría imposible de realizar.
 
