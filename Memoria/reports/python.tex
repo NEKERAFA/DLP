@@ -32,19 +32,16 @@ La principal diferencia en la implementación con respecto a todos los demás le
 
 Debido a esto, hemos definido el árbol como un diccionario (un array asociativo) que contiene tres claves: \texttt{key} que guarda la clave del nodo, \texttt{left} y \texttt{right} que los diccionarios de los hijos izquierdo y derecho.
 
-Con respecto a las funciones, podemos comentar de su implementación que es casi todo directo a excepción de las siguientes funciones:
+Con respecto a las funciones, podemos comentar de su implementación que es casi directa a excepción de las siguientes funciones:
 \begin{itemize}
-	\item \texttt{crearNodoA}: Crea un diccionario con la clave \texttt{key} a \texttt{None} y las claves \texttt{left} y \texttt{right} como diccionarios vacíos. Debido a lo comentado arriba, esta función no se puede hacer pública.
-	\item \texttt{arbolVacio}: Devuelve un diccionario vacío.
-	\item \texttt{insertar\_r}
-	\item \texttt{insertar\_i}
-	\item \texttt{buscar\_r}
-	\item \texttt{buscar\_i}
-	\item \texttt{sup2}
-	\item \texttt{eliminar\_r}
-	\item \texttt{eliminar\_i}
+	\item \texttt{crearNodoA}: Como ya comentamos, en Python no se puede asignar memoria manualmente, así que esta función solo crea un diccionario con la clave \texttt{key} a \texttt{None} y las claves \texttt{left} y \texttt{right} como diccionarios vacíos. Cabe destacar que esta función no se puede hacer pública.
+	\item \texttt{arbolVacio}: Devuelve un diccionario vacío en vez de un valor nulo.
+	\item \texttt{insertar\_r}: La única diferencia con Pascal es que en Python, si se asigna otro valor a un parámetro, el scope pasa a ser el de la función, por lo que, para insertar en el nodo hemos tenido que asignar los nuevos valores al nodo
+	\item \texttt{insertar\_i}: Pasa algo parecido a \texttt{insertar\_r} en el momento de asignarlo al árbol.
+	\item \texttt{sup2}: Cuando subimos el árbol izquierdo del nodo más a la derecha, hacemos una comprobación de este para que si está vacío para eliminar las claves, o hacer algo parecido a \texttt{insertar\_r} cuando contiene datos.
+	\item \texttt{eliminar\_r}: Pasa algo parecido a \texttt{sup2} cuando subimos el único hijo del nodo a eliminar.
 \end{itemize}
 
-Como conclusión, esta implementación fue la más sencilla en cuanto a que la traducción fue directa.
-
 \subsubsection{Possible Enhancements} % Posibles mejoras
+
+% TODO usar una clase por nodos
